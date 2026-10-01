@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đi gặp mùa thu - Thầy Vân Pháp</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;500;600;700&family=Saira+Condensed:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-orange: #f59e0b;
+            --dark-orange: #d97706;
+            --light-orange: #fef3c7;
+            --text-dark: #78350f;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--light-orange);
+            overflow-x: hidden;
+            margin: 0;
+            color: var(--text-dark);
+        }
+
+        .font-script { font-family: 'Dancing Script', cursive; }
+        .font-heading { font-family: 'Saira Condensed', sans-serif; }
+
+        /* Hiệu ứng icon bay lên */
+        .floating-icon {
+            position: fixed;
+            bottom: -50px;
+            pointer-events: none;
+            z-index: 50;
+            animation: floatUp linear infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Chuyển cảnh nền đen */
+        #transition-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #1a1a1a; /* Màu đen nhánh để chuyển cảnh */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.8s ease;
+        }
+
+        #transition-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .transition-text {
+            color: var(--primary-orange);
+            font-size: 2rem;
+            text-align: center;
+            font-weight: bold;
+            padding: 20px;
+            max-width: 80%;
+            line-height: 1.5;
+        }
+
+        /* Định dạng các Step */
+        .step {
+            display: none;
+            min-height: 100vh;
+            padding: 4rem 1rem;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start; 
+            text-align: center;
+            animation: fadeIn 1s ease;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .step.active { display: flex; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Nút bấm chuyển Step */
+        .btn-orange {
+            background-color: var(--primary-orange);
+            color: white;
+            padding: 0.75rem 2.5rem;
+            border-radius: 9999px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+            margin-top: 2.5rem;
+            margin-bottom: 3rem;
+            cursor: pointer;
+            border: none;
+            z-index: 100;
+        }
+
+        .btn-orange:hover {
+            background-color: var(--dark-orange);
+            transform: scale(1.05);
+        }
+
+        /* Hộp văn bản (Quote / Note) */
+        .quote-box {
+            background: rgba(255, 255, 255, 0.7);
+            border-left: 5px solid var(--primary-orange);
+            padding: 1.5rem;
+            margin: 1.5rem auto;
+            font-style: italic;
+            color: #78350f;
+            text-align: justify;
+            max-width: 800px;
+            border-radius: 0 12px 12px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .on-note-box {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 1.5rem;
+            max-width: 900px;
+            text-align: justify;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            border: 2px solid #fde68a;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        /* Cấu trúc ảnh */
+        .story-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 4px solid white;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .story-img:hover {
+            transform: translateY(-5px);
+        }
+
+        .step-title {
+            color: #228B22; /* Màu xanh lá tạo điểm nhấn nhẹ */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Icon bay bổng -->
+    <div id="floating-icons-container"></div>
+
+    <!-- Lớp phủ chuyển cảnh nền đen -->
+    <div id="transition-overlay">
+        <div class="transition-text font-heading" id="overlay-text"></div>
+    </div>
+
+    <section id="step-1" class="step active">
+        <h1 class="text-5xl md:text-7xl text-orange-800 font-script mb-8 font-bold">Đi gặp Mùa Thu</h1>
+        
+        <div class="w-64 h-64 md:w-80 md:h-80 rounded-full border-4 border-orange-500 overflow-hidden mb-6 shadow-2xl">
+            <img src="https://placehold.co/600x600/3A4F41/FDFBF7?text=Thầy+Vân+Pháp+tĩnh+tọa" alt="Thầy Vân Pháp tĩnh tọa" class="w-full h-full object-cover">
+        </div>
+        
+        <h2 class="text-2xl md:text-3xl font-bold text-orange-900 font-heading tracking-widest uppercase">– Thầy Vân Pháp –</h2>
+        
+        <div class="on-note-box mt-8">
+            <p class="mb-4">
+                "Nhân một ngày mùa thu đặc biệt cách đây 48 năm, ngày Thầy cất tiếng khóc chào đời. Mang hình hài vẹn nguyên của thân phụ thân mẫu Thầy trao tặng. Để chúng con có một người Thầy dẫn dắt chúng con trên mọi nẻo đường."
+            </p>
+            <p>
+                "Và để hôm nay chúng con có cơ hội ngồi lại, ngắm nhìn thật kỹ hình dáng của người Thầy đã biểu hiện như thế nào cho chúng con trong suốt những năm tháng vừa qua. Để lắng nghe thật sâu từ tận trái tim chúng con rằng 'Thầy trong chúng con là….'"
+            </p>
+        </div>
+        
+        <button class="btn-orange" onclick="goToStep(2, 'Cuộc đời bắt đầu từ nguồn cội...')">Tiếp tục hành trình</button>
+    </section>
+
+    <section id="step-2" class="step">
+        <h2 class="text-3xl md:text-4xl font-heading text-orange-800 mb-8 uppercase tracking-wider">
+            Thầy là người con hiếu thảo của gia đình...
+        </h2>
+        
+        <div class="w-full max-w-3xl mb-6">
+            <img src="https://placehold.co/800x500/8B5A2B/FDFBF7?text=Thầy+mỉm+cười+ấm+áp+bên+Ba+và+Mẹ" alt="Thầy bên gia đình" class="story-img">
+        </div>
+
+        <div class="quote-box">
+            <p>"Thầy là người con hiếu thảo của gia đình, mang theo phúc tướng của ba và mẹ, là người con cháu tiếp nối những hạt giống dễ thương của dòng họ."</p>
+        </div>
+        
+        <button class="btn-orange" onclick="goToStep(3, 'Tiếp bước theo hương thơm nhà lưu truyền...')">Tiếp tục</button>
+    </section>
+
+    <section id="step-3" class="step">
+        <h2 class="text-3xl md:text-4xl font-heading text-orange-800 mb-8 uppercase tracking-wider px-4">
+            Thầy là người học trò chăm ngoan, đệ tử thân cận...
+        </h2>
+        
+        <div class="grid md:grid-cols-2 gap-4 w-full max-w-4xl mb-8">
+            <div class="aspect-[4/3]"><img src="https://placehold.co/600x450/6A4E23/FDFBF7?text=Thầy+mỉm+cười+bên+Ôn" alt="Thầy bên Ôn" class="story-img"></div>
+            <div class="aspect-[4/3]"><img src="https://placehold.co/600x450/4B6043/FDFBF7?text=Khất+thực+cùng+Ôn" alt="Đi khất thực" class="story-img"></div>
+        </div>
+
+        <div class="on-note-box">
+            <p class="mb-4">
+                "Thầy là người học trò chăm ngoan, người đệ tử thân cận và là cánh tay nối dài của Ôn. Nhìn hình ảnh Thầy luôn đi theo bước chân của Ôn để cùng trau dồi Pháp học, Pháp hành mỗi ngày, cách Thầy đem những gì học được để lan tỏa Phật Pháp trong đời sống. Chúng con như được có thêm một tấm gương tiêu biểu để noi theo và cố gắng 'tiến bước theo hương thơm nhà lưu truyền'."
+            </p>
+            <p>
+                "Qua cách Thầy chăm sóc Ôn chúng con cảm nhận được tình cảm thầy trò sâu sắc hơn và học thêm được nhiều cách để quan tâm người Thầy của mình. Và vì Thầy là học trò của Ôn, chúng con cũng là những người học trò của Ôn. Nên may mắn thay nhiều lúc Thầy như một người huy trưởng làm cầu nối, đưa những tâm tư nguyện vọng của chúng con đến với Ôn. Để Ôn có thể hiểu được suy nghĩ của giới trẻ của chúng con, từ đó có những bài pháp phù hợp giúp chúng con lớn lên từng ngày."
+            </p>
+        </div>
+        
+        <button class="btn-orange" onclick="goToStep(4, 'Người Thầy kiên trì truyền dạy Pháp...')">Tiếp tục</button>
+    </section>
+
+    <section id="step-4" class="step">
+        <h2 class="text-3xl md:text-4xl font-heading text-orange-800 mb-6 uppercase tracking-wider">
+            Thầy là người Thầy của chúng con
+        </h2>
+        
+        <div class="quote-box text-center mb-8 mx-4">
+            <p class="text-justify mb-3">
+                "Ngồi kéo một lượt để tìm những hình ảnh Thầy dạy Pháp cho chúng con trong trang Chánh Tâm. Mà chúng con xúc động rơi nước mắt. Hình ảnh của người Thầy qua bao tấm áo, chiếc khăn choàng, mũ len - hình ảnh cho thấy dù xuân, hạ, thu hay đông - dù nắng hay mưa, nóng nực hay buốt giá, lớp đông hay ít. Thầy vẫn kiên trì, bền bỉ tay cầm mic, tay cầm bút đứng trên bảng cùng nụ cười hiền hòa, dạy cho chúng con từ nội dung kinh đến những bài Pháp hành ứng dụng."
+            </p>
+            <p class="text-justify mb-3">
+                "Vậy mà nhiều lúc chúng con lại lơ là bỏ những buổi học quý báu, phụ lòng Thầy. Nhờ những lời động viên đi học của Thầy mà chúng con biết 'tình thương nuôi lớn tâm từ hiểu biết'. Thầy đã thương chúng con, hiểu được ở độ tuổi của chúng con, chúng con vẫn còn ham vui nên đôi lúc không ưu tiên cho những buổi học. Vậy nên Thầy đã luôn hỏi han để chúng con siêng năng hơn."
+            </p>
+            <p class="font-bold text-orange-700">
+                "Thật tốt, vì chúng con tuy còn nhỏ dại nhưng lại gặp được một người Thầy luôn sẵn lòng đứng phía sau để đợi chúng con trở về, tỉnh thức chúng con chứ không để chúng con bị bỏ lại phía sau. Biết ơn thay! Trân quý thay!"
+            </p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 w-full max-w-5xl mx-auto px-4">
+            <div class="col-span-2 row-span-2 aspect-square"><img src="https://placehold.co/600x600/C88A44/fff?text=Dạy+Kinh+Thập+Thiện" class="story-img"></div>
+            <div class="aspect-square"><img src="https://placehold.co/300x300/8B5A2B/fff?text=Áo+ấm+mùa+đông" class="story-img"></div>
+            <div class="aspect-square"><img src="https://placehold.co/300x300/A0522D/fff?text=Viết+bảng" class="story-img"></div>
+            <div class="aspect-square"><img src="https://placehold.co/300x300/CD853F/fff?text=Cầm+mic+giảng" class="story-img"></div>
+            <div class="aspect-square"><img src="https://placehold.co/300x300/D2691E/fff?text=Trời+mưa+vẫn+dạy" class="story-img"></div>
+            <div class="col-span-2 md:col-span-2 aspect-[2/1]"><img src="https://placehold.co/600x300/8B4513/fff?text=Kinh+Chuyển+Pháp+Luân" class="story-img"></div>
+            <div class="col-span-2 md:col-span-2 aspect-[2/1]"><img src="https://placehold.co/600x300/A52A2A/fff?text=Nụ+cười+hiền+hòa" class="story-img"></div>
+        </div>
+        
+        <button class="btn-orange" onclick="goToStep(5, 'Người Cha đồng hành trên mọi nẻo đường...')">Tiếp tục</button>
+    </section>
+
+    <section id="step-5" class="step">
+        <h2 class="text-3xl md:text-4xl font-heading text-orange-800 mb-8 uppercase tracking-wider px-4 max-w-4xl">
+            Thầy là người Cha luôn đồng hành chúng con trên mọi nẻo đường thực tập và tu tập
+        </h2>
+        
+        <div class="on-note-box w-full mb-10 border-t-4 border-t-orange-400">
+            <h3 class="text-2xl font-bold text-orange-800 mb-3 font-script">Ngày Xuân</h3>
+            <p>"Thầy có mặt cho chúng con trong những ngày xuân, trao cho chúng con những nụ cười tươi như hoa mùa xuân, trao đi những chiếc bao lì xì đỏ, những lời chúc may mắn, tài lộc, bình an, yên vui để một năm chúng con được hưởng phước lành, an yên."</p>
+            <p class="text-sm italic text-gray-500 mt-2">(Đang tìm ảnh Tết...)</p>
+        </div>
+
+        <div class="w-full max-w-5xl mb-12">
+            <h3 class="text-2xl font-bold text-orange-800 mb-4 font-script text-left px-4">Kỷ niệm Chu niên Lớp Chánh Tâm</h3>
+            <div class="quote-box mx-0 max-w-full mb-6">
+                <p>"Thầy hiện diện để chứng minh, cùng nhìn lại hành trình của Chánh Tâm trong chu niên hằng năm. Thầy thắp lên ngọn đèn từ bi và trí tuệ, soi đường cho chúng con trong hành trình xây dựng, gìn giữ lớp trong năm tiếp theo. Cùng chúng con dâng lời phát nguyện... Lớp được như ngày hôm nay một phần là nhờ có Thầy. Và có Thầy ở đó, lòng chúng con mới thầy đủ đầy và trọn vẹn."</p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-3 px-4">
+                <div class="aspect-video"><img src="https://placehold.co/400x225/8B0000/fff?text=Thắp+nến" class="story-img"></div>
+                <div class="aspect-video"><img src="https://placehold.co/400x225/A52A2A/fff?text=Cắt+bánh" class="story-img"></div>
+                <div class="aspect-video"><img src="https://placehold.co/400x225/B22222/fff?text=Lời+phát+nguyện" class="story-img"></div>
+                <div class="aspect-video"><img src="https://placehold.co/400x225/CD5C5C/fff?text=Học+chúng" class="story-img"></div>
+                <div class="aspect-video"><img src="https://placehold.co/400x225/DC143C/fff?text=Chư+Tăng+chứng+minh" class="story-img"></div>
+                <div class="aspect-video"><img src="https://placehold.co/400x225/800000/fff?text=Chụp+ảnh+tập+thể" class="story-img"></div>
+            </div>
+        </div>
+
+        <div class="w-full max-w-5xl mb-12">
+            <h3 class="text-2xl font-bold text-orange-800 mb-4 font-script px-4">Bình an & Cầu nguyện</h3>
+            <div class="on-note-box mx-4 mb-6">
+                <p>"Đối với chúng con chỉ cần thấy bóng dáng Thầy xuất hiện, chúng con đã thấy bình an. Thầy không chỉ mang lại sự an yên cho chúng con thông qua thân hành mà Thầy còn nhất tâm nhất ý cầu nguyện cho chúng con và gia đình được an thông qua các buổi lễ phóng sanh của lớp. Thầy hướng dẫn chúng con cách để chúng con tự thực tập chuyển hóa những bất an trong lòng khi ở một mình..."</p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 px-4">
+                <div class="aspect-[3/4]"><img src="https://placehold.co/300x400/2F4F4F/fff?text=Dâng+sớ+cầu+an" class="story-img"></div>
+                <div class="aspect-[3/4]"><img src="https://placehold.co/300x400/556B2F/fff?text=Khóa+lễ" class="story-img"></div>
+                <div class="aspect-[3/4]"><img src="https://placehold.co/300x400/6B8E23/fff?text=Phóng+sanh" class="story-img"></div>
+                <div class="aspect-[3/4]"><img src="https://placehold.co/300x400/8FBC8F/fff?text=Thắp+đăng" class="story-img"></div>
+            </div>
+        </div>
+
+        <div class="w-full max-w-5xl mb-12">
+            <h3 class="text-2xl font-bold text-orange-800 mb-4 font-script text-right px-4">Lễ Quy Y Tam Bảo</h3>
+            <div class="quote-box mx-4 mb-6 ml-auto border-l-0 border-r-5" style="border-right: 5px solid var(--primary-orange); border-radius: 12px 0 0 12px;">
+                <p class="text-right">"Thầy là người truyền giới cho chúng con thông qua buổi lễ Quy Y Tam Bảo. Thầy chứng kiến khoảnh khắc chúng con một lần nữa được sinh ra trong gia đình Phật Pháp, cho chúng con những giới pháp hành trì để có hạnh phúc trong cuộc sống và nuôi dưỡng hạnh phúc của muôn loài. Hạnh phúc thay!"</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 px-4">
+                <div class="aspect-square"><img src="https://placehold.co/400x400/DAA520/fff?text=Truyền+giới" class="story-img"></div>
+                <div class="aspect-square"><img src="https://placehold.co/400x400/B8860B/fff?text=Toàn+cảnh+lễ" class="story-img"></div>
+                <div class="aspect-square"><img src="https://placehold.co/400x400/CD853F/fff?text=Nhận+Điệp" class="story-img"></div>
+            </div>
+        </div>
+
+        <div class="w-full max-w-5xl on-note-box mx-4 bg-orange-50 border-orange-200">
+            <h3 class="text-2xl font-bold text-orange-800 mb-3 font-script">Lễ Quá đường & Cúng dường chư Tăng</h3>
+            <p>"Thầy cho chúng con được có cơ hội cúng dường chư Tăng thông qua lễ quá đường. Qua đây chúng con được làm giàu thêm mảnh ruộng phước đức của chúng con."</p>
+        </div>
+
+        <button class="btn-orange" onclick="goToStep(6, 'Thầy trong những mùa khóa tu...')">Tiếp tục</button>
+    </section>
+
+    <section id="step-6" class="step">
+        <h2 class="text-3xl md:text-4xl font-heading text-orange-800 mb-8 uppercase tracking-wider px-4">
+            Thầy trong những mùa khóa tu
+        </h2>
+        
+        <div class="w-full max-w-4xl mb-6">
+            <img src="https://placehold.co/1000x550/2E8B57/FDFBF7?text=Thầy+trong+khóa+tu+cùng+chúng+con" alt="Thầy trong khóa tu" class="story-img">
+        </div>
+
+        <div class="on-note-box">
+            <p>
+                "Thầy luôn có mặt đúng lúc, săn sóc, hỏi han chúng con mỗi mùa khóa tu đến. Là chỗ dựa vững chắc để chúng con yên tâm phụng sự. Cùng chúng con bước đi trên con đường vui này trong các thời khóa của khóa tu. Qua đó chúng con có cơ hội được lớn lên, có thêm nhiều duyên lành trong quá trình hướng dẫn các bạn tu tập cùng chúng con."
+            </p>
+        </div>
+        
+        <button class="btn-orange" onclick="goToStep(7, 'Nuôi dưỡng lòng biết ơn...')">Tiếp tục</button>
+    </section>
+
+    <section id="step-7" class="step">
+        <h2 class="text-3xl md:text-4xl font-heading text-orange-800 mb-8 uppercase tracking-wider px-4">
+            Lễ Vu Lan & 20/11
+        </h2>
+        
+        <div class="w-full max-w-3xl mb-6">
+            <img src="https://placehold.co/800x500/8B0000/FDFBF7?text=Ngày+lễ+Vu+Lan+và+20/11" alt="Vu Lan và 20/11" class="story-img">
+        </div>
+
+        <div class="quote-box">
+            <p>"Thầy hoan hỷ cho chúng con được nuôi dưỡng lòng biết ơn, lối sống nghĩa tình khi đã dành thời gian để có mặt cùng chúng con qua các mùa lễ Vu Lan, 20/11.</p>
+            <p class="mt-2 text-orange-700 font-bold">Những lúc như vậy niềm vui của chúng con đơn giản là sự có mặt của Thầy."</p>
+        </div>
+        
+        <button class="btn-orange" onclick="goToStep(8, 'Nhà tài trợ vàng của chúng con...')">Tiếp tục</button>
+    </section>
+
+    <section id="step-8" class="step">
+        <h2 class="text-3xl md:text-4xl font-heading text-orange-800 mb-8 uppercase tracking-wider px-4">
+            Sự ủng hộ vững chắc phía sau
+        </h2>
+        
+        <div class="w-full max-w-4xl mb-6">
+            <img src="https://placehold.co/900x500/DAA520/FDFBF7?text=Nhà+tài+trợ+vàng+cho+các+hoạt+động" alt="Tài trợ hoạt động" class="story-img">
+        </div>
+
+        <div class="on-note-box border-4 border-yellow-400">
+            <p>
+                "Sự đồng hành đôi lúc là đi cùng nhau, đôi khi là lại là sự ủng hộ, đứng phía sau tài trợ để chúng con có nguồn lực tiến lên. Cảm ơn Thầy vì đã luôn ủng hộ mọi hoạt động mà chúng con đã đề ra, là “nhà tài trợ vàng, bạc, kim cương,...” cho các cuộc thi tìm kiếm tài năng, cho những buổi tập luyện chuẩn bị cho các hoạt động của lớp. Nhờ sự chung sức của Thầy mà chúng con có nhiều sân chơi để hiểu về chính mình, có cơ hội để thử sức và hoàn thiện bản thân."
+            </p>
+        </div>
+        
+        <button class="btn-orange" onclick="goToStep(9, 'Lời tri ân sâu sắc nhất...')">Tiếp tục</button>
+    </section>
+
+    <section id="step-9" class="step">
+        <div class="p-8 bg-white/70 rounded-2xl border-2 border-orange-200 max-w-2xl shadow-xl mt-12">
+            <h2 class="text-5xl font-script text-orange-800 mb-8 text-center font-bold">Lời tri ân</h2>
+            <p class="text-[1.15rem] text-orange-900 leading-relaxed italic text-justify">
+                "Cứ mải miết với từng bước chân nhỏ, ngoảnh nhìn lại chúng con đã đi được cả dặm đường dài. Chánh Tâm đã đi một hành trình dài gần 20 năm, và trên hành trình ấy chúng con hạnh phúc khi có sự hiện diện của Thầy.
+                <br><br>Chúng con biết ơn lắm tình yêu thương, sự kiên nhẫn mà Thầy luôn dành cho chúng con. Nhờ có Thầy, chúng con biết học Phật không chỉ là học lời kinh tiếng kệ mà còn là học cách sống yêu thương, biết điều gì dễ thương, điều gì chưa dễ thương.
+                <br><br>Và tất thảy, Thầy đã trở thành ánh sáng dẫn đường chúng con đi. Đôi lúc chúng con còn vụng về, còn chậm bước, nhưng Thầy luôn ở đó, vững chãi mà lắng nghe chúng con. Để chúng con biết, mọi chênh vênh đều sẽ qua, chỉ cần không buông bỏ.
+                <br><br>Ngoài cuộc sống, chúng con mỗi người mỗi ngã rẽ khác nhau, nhưng cứ đến mỗi chiều chủ nhật, đến chùa là học trò của Ôn của Thầy, vô tư và bình dị. Để mỗi chủ nhật chúng con lại quay về chùa như quay về với bản thân trong lành nhất.
+                <br><br>Nhân ngày tiếp nối của Thầy, chúng con xin thành kính tri ân công dạy dỗ của Thầy và nguyện sẽ cố gắng gìn giữ, nuôi lớn những điều tốt đẹp mà Thầy đã trao truyền cho chúng con. 🧡"
+            </p>
+        </div>
+        <button class="btn-orange" onclick="goToStep(10, 'Những lời nhắn gửi yêu thương...')">Đến phần cuối</button>
+    </section>
+
+    <section id="step-10" class="step">
+        <h2 class="text-3xl font-heading text-orange-800 mb-4 uppercase tracking-widest mt-12">
+            Lời chúc của những người học trò thân thương 🌿
+        </h2>
+        <p class="step-title font-script text-4xl mb-8 font-bold text-green-700">"Thầy trong con"</p>
+        
+        <div class="w-full max-w-2xl bg-white p-6 rounded-xl shadow border-2 border-orange-300">
+            <!-- Mockup dữ liệu lời chúc để trang không bị trống nếu thiếu file JS -->
+            <div class="mb-4 pb-4 border-b border-gray-100 text-left">
+                <p class="font-bold text-orange-800 mb-1">Ban cán sự lớp Chánh Tâm</p>
+                <p class="italic text-gray-700">"Kính chúc Thầy một mùa thu thật ấm áp, nhiều sức khỏe và mãi là điểm tựa vững chắc cho chúng con trên con đường tu học."</p>
+            </div>
+            <div class="mb-4 pb-4 border-b border-gray-100 text-left">
+                <p class="font-bold text-orange-800 mb-1">Nhóm Học chúng</p>
+                <p class="italic text-gray-700">"Cảm ơn Thầy vì đã luôn kiên nhẫn, lắng nghe và thấu hiểu những băn khoăn của tuổi trẻ chúng con."</p>
+            </div>
+            <div class="text-left">
+                <p class="font-bold text-orange-800 mb-1">Một người học trò giấu tên</p>
+                <p class="italic text-gray-700">"Mỗi lần nhìn Thầy mỉm cười là chúng con thấy bình an. Mong Thầy luôn khỏe mạnh và an nhiên tự tại."</p>
+            </div>
+        </div>
+
+        <button class="btn-orange" onclick="goToStep(11, 'Những khoảnh khắc vô giá cùng Chánh Tâm...')">Tiếp tục</button>
+    </section>
+
+    <section id="step-11" class="step">
+        <h2 class="text-3xl md:text-4xl font-heading text-orange-800 mb-6 uppercase tracking-wider text-center">
+            Đại Gia Đình Chánh Tâm
+        </h2>
+        
+        <div class="quote-box text-center mb-8 mx-4">
+            <p>"Những bước chân của chúng con ngày một vững chãi, vì biết rằng trên con đường này, chúng con vẫn đang bước đi cùng Thầy. Xin lưu giữ lại đây những nụ cười, những khoảnh khắc tuyệt đẹp của Thầy và trò để hành trình này mãi là một kỷ niệm đẹp trong lòng mỗi chúng con."</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-5xl mb-8 px-4">
+            <div class="aspect-[4/3] rounded-xl overflow-hidden border-4 border-white shadow-xl">
+                <img src="https://placehold.co/800x600/D2691E/FDFBF7?text=Tập+thể+Chánh+Tâm+cùng+Thầy" alt="Tập thể Chánh Tâm" class="w-full h-full object-cover transition-transform hover:scale-105 duration-300">
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="aspect-square rounded-xl overflow-hidden border-4 border-white shadow-lg">
+                    <img src="https://placehold.co/400x400/8B5A2B/FDFBF7?text=Nụ+cười+Thầy+trò" alt="Nụ cười Thầy trò" class="w-full h-full object-cover transition-transform hover:scale-105 duration-300">
+                </div>
+                <div class="aspect-square rounded-xl overflow-hidden border-4 border-white shadow-lg">
+                    <img src="https://placehold.co/400x400/CD853F/FDFBF7?text=Khoảnh+khắc+đáng+nhớ" alt="Khoảnh khắc đáng nhớ" class="w-full h-full object-cover transition-transform hover:scale-105 duration-300">
+                </div>
+                <div class="col-span-2 aspect-[2/1] rounded-xl overflow-hidden border-4 border-white shadow-lg">
+                    <img src="https://placehold.co/800x400/A0522D/FDFBF7?text=Đồng+hành+yêu+thương" alt="Đồng hành yêu thương" class="w-full h-full object-cover transition-transform hover:scale-105 duration-300">
+                </div>
+            </div>
+        </div>
+
+        <button class="btn-orange" onclick="location.reload()">Khép lại hành trình & Quay lại từ đầu</button>
+    </section>
+
+    <!-- Nhạc nền (Thay đổi đường dẫn src thành file nhạc của bạn) -->
+    <audio id="bg-music" loop>
+        <source src="./assets/music/BACKGROUND_MUSIC.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        window.onload = () => {
+            initIcons();
+        };
+
+        // Hàm tạo Icon lá/sao rơi ngẫu nhiên
+        function initIcons() {
+            const container = document.getElementById('floating-icons-container');
+            const symbols = ['✨', '🍂', '🍁', '🧡', '🌿', '🍃'];
+            
+            setInterval(() => {
+                const el = document.createElement('div');
+                el.className = 'floating-icon';
+                el.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+                
+                el.style.left = Math.random() * 100 + 'vw';
+                el.style.fontSize = (Math.random() * 15 + 15) + 'px';
+                el.style.animationDuration = (Math.random() * 5 + 6) + 's'; // 6s - 11s để trôi chậm hơn
+                
+                container.appendChild(el);
+                
+                setTimeout(() => el.remove(), 11000);
+            }, 700);
+        }
+
+        // Logic chuyển Step với hiệu ứng màn hình đen
+        function goToStep(nextStepNum, transitionText) {
+            // Phát nhạc nền khi người dùng bắt đầu tương tác nhấn nút
+            const bgMusic = document.getElementById('bg-music');
+            if (bgMusic && bgMusic.paused) {
+                bgMusic.volume = 0.6; // Cài đặt âm lượng ở mức 60%
+                bgMusic.play().catch(e => console.log("Trình duyệt chặn tự động phát nhạc: ", e));
+            }
+
+            const overlay = document.getElementById('transition-overlay');
+            const overlayTxt = document.getElementById('overlay-text');
+            
+            // Set text và hiện overlay (màn hình đen mờ dần lên)
+            overlayTxt.innerText = transitionText;
+            overlay.classList.add('active');
+
+            // Đợi 0.8s (thời gian transition CSS) để màn hình đen hoàn toàn che lấp
+            setTimeout(() => {
+                // 1. Ẩn tất cả các step
+                document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+                
+                // 2. Kích hoạt Step được chỉ định
+                const nextStep = document.getElementById(`step-${nextStepNum}`);
+                if (nextStep) nextStep.classList.add('active');
+                
+                // 3. Cuộn trang lên đầu ngay lập tức
+                window.scrollTo({ top: 0, behavior: 'instant' });
+                
+                // 4. Giữ màn hình đen một chút cho người dùng đọc chữ, sau đó mở ra
+                setTimeout(() => {
+                    overlay.classList.remove('active');
+                }, 1500); // Giảm thời gian chờ xuống 1.5s cho mượt
+
+            }, 800); 
+        }
+    </script>
+</body>
+</html>
