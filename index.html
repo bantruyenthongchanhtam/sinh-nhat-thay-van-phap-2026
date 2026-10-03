@@ -173,6 +173,63 @@
             color: #228B22; 
         }
 
+        .navigation-tooltip.is-visible {
+            opacity: 1;
+        }
+
+        #wishes-container {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .wish-card {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border: 1px solid #fde68a;
+            border-radius: 12px;
+            background: #fffbeb;
+            text-align: left;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+
+        .wish-card:hover {
+            background: #fff7ed;
+            border-color: #fbbf24;
+        }
+
+        .wish-card:focus-visible {
+            outline: 3px solid #f59e0b;
+            outline-offset: 2px;
+        }
+
+        .wish-card-name {
+            margin-bottom: 0.5rem;
+            color: #9a3412;
+            font-size: 1.125rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .wish-card-content {
+            display: -webkit-box;
+            overflow: hidden;
+            color: #374151;
+            font-size: 1.1rem;
+            font-style: italic;
+            line-height: 1.65;
+            text-align: justify;
+            white-space: pre-line;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+        }
+
+        .wish-card.is-expanded .wish-card-content {
+            display: block;
+            overflow: visible;
+            -webkit-line-clamp: unset;
+        }
+
         /* Thanh cuộn Lời chúc */
         .custom-scrollbar::-webkit-scrollbar {
             width: 6px;
@@ -204,33 +261,33 @@
     <div class="fixed right-4 bottom-8 md:right-8 md:bottom-12 flex flex-col gap-4 z-[500]">
         <!-- Nút Lời chúc -->
         <div class="relative group flex items-center justify-end">
-            <span class="absolute right-full mr-4 px-3 py-1.5 bg-white text-orange-900 text-sm font-bold rounded-lg shadow-md opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap pointer-events-none border border-orange-100">
+            <span class="navigation-tooltip absolute right-full mr-4 px-3 py-1.5 bg-white text-orange-900 text-sm font-bold rounded-lg shadow-md opacity-0 transition-all duration-300 whitespace-nowrap pointer-events-none border border-orange-100">
                 Xem lời chúc
                 <span class="absolute top-1/2 -right-1.5 -translate-y-1/2 w-3 h-3 bg-white transform rotate-45 border-r border-t border-orange-100"></span>
             </span>
-            <button onclick="goToStep(11, 'Gửi gắm yêu thương...')" class="w-12 h-12 md:w-14 md:h-14 bg-white text-orange-600 rounded-full flex items-center justify-center shadow-[0_4px_15px_rgba(245,158,11,0.3)] hover:bg-orange-50 hover:scale-110 transition-all duration-300 border-2 border-orange-200 cursor-pointer">
+            <button onclick="navigateWithTooltip(this, 11, 'Gửi gắm yêu thương...')" class="w-12 h-12 md:w-14 md:h-14 bg-white text-orange-600 rounded-full flex items-center justify-center shadow-[0_4px_15px_rgba(245,158,11,0.3)] hover:bg-orange-50 hover:scale-110 transition-all duration-300 border-2 border-orange-200 cursor-pointer">
                 <svg class="w-6 h-6 md:w-7 md:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
             </button>
         </div>
 
         <!-- Nút Thư viện ảnh -->
         <div class="relative group flex items-center justify-end">
-            <span class="absolute right-full mr-4 px-3 py-1.5 bg-white text-orange-900 text-sm font-bold rounded-lg shadow-md opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap pointer-events-none border border-orange-100">
+            <span class="navigation-tooltip absolute right-full mr-4 px-3 py-1.5 bg-white text-orange-900 text-sm font-bold rounded-lg shadow-md opacity-0 transition-all duration-300 whitespace-nowrap pointer-events-none border border-orange-100">
                 Thư viện ảnh
                 <span class="absolute top-1/2 -right-1.5 -translate-y-1/2 w-3 h-3 bg-white transform rotate-45 border-r border-t border-orange-100"></span>
             </span>
-            <button onclick="goToStep(12, 'Nhìn lại khoảnh khắc...')" class="w-12 h-12 md:w-14 md:h-14 bg-white text-orange-600 rounded-full flex items-center justify-center shadow-[0_4px_15px_rgba(245,158,11,0.3)] hover:bg-orange-50 hover:scale-110 transition-all duration-300 border-2 border-orange-200 cursor-pointer">
+            <button onclick="navigateWithTooltip(this, 12, 'Nhìn lại khoảnh khắc...')" class="w-12 h-12 md:w-14 md:h-14 bg-white text-orange-600 rounded-full flex items-center justify-center shadow-[0_4px_15px_rgba(245,158,11,0.3)] hover:bg-orange-50 hover:scale-110 transition-all duration-300 border-2 border-orange-200 cursor-pointer">
                 <svg class="w-6 h-6 md:w-7 md:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
             </button>
         </div>
 
         <!-- Nút Về trang đầu -->
         <div class="relative group flex items-center justify-end">
-            <span class="absolute right-full mr-4 px-3 py-1.5 bg-white text-orange-900 text-sm font-bold rounded-lg shadow-md opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap pointer-events-none border border-orange-100">
+            <span class="navigation-tooltip absolute right-full mr-4 px-3 py-1.5 bg-white text-orange-900 text-sm font-bold rounded-lg shadow-md opacity-0 transition-all duration-300 whitespace-nowrap pointer-events-none border border-orange-100">
                 Về trang đầu
                 <span class="absolute top-1/2 -right-1.5 -translate-y-1/2 w-3 h-3 bg-white transform rotate-45 border-r border-t border-orange-100"></span>
             </span>
-            <button onclick="goToStep(1, 'Hành trình bắt đầu...')" class="w-12 h-12 md:w-14 md:h-14 bg-orange-500 text-white rounded-full flex items-center justify-center shadow-[0_4px_15px_rgba(245,158,11,0.4)] hover:bg-orange-600 hover:scale-110 transition-all duration-300 border-2 border-white cursor-pointer">
+            <button onclick="navigateWithTooltip(this, 1, 'Hành trình bắt đầu...')" class="w-12 h-12 md:w-14 md:h-14 bg-orange-500 text-white rounded-full flex items-center justify-center shadow-[0_4px_15px_rgba(245,158,11,0.4)] hover:bg-orange-600 hover:scale-110 transition-all duration-300 border-2 border-white cursor-pointer">
                 <svg class="w-6 h-6 md:w-7 md:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
             </button>
         </div>
@@ -278,7 +335,7 @@
 
     <section id="step-3" class="step">
         <h2 class="text-3xl md:text-4xl font-heading text-orange-800 mb-8 uppercase tracking-wider px-4">
-            Thầy là người học trò chăm ngoan, đệ tử thân cận...
+            Thầy là học trò ngoan, đệ tử thân cận, cánh tay nối dài của Ôn
         </h2>
         
         <div class="grid md:grid-cols-2 gap-4 w-full max-w-4xl mb-8">
@@ -344,12 +401,12 @@
 
     <section id="step-5" class="step">
         <h2 class="text-3xl md:text-4xl font-heading text-orange-800 mb-8 uppercase tracking-wider px-4 max-w-4xl">
-            Thầy là người Cha luôn đồng hành chúng con trên mọi nẻo đường thực tập và tu tập
+            Thầy là người Cha luôn đồng hành cùng chúng con trên mọi nẻo đường tu học
         </h2>
         
         <div class="on-note-box w-full mb-10 border-t-4 border-t-orange-400">
             <h3 class="text-2xl font-bold text-orange-800 mb-3 font-script">Ngày Xuân</h3>
-            <p>"Thầy có mặt cho chúng con trong những ngày xuân, trao cho chúng con những nụ cười tươi như hoa mùa xuân, trao đi những chiếc bao lì xì đỏ, những lời chúc may mắn, tài lộc, bình an, yên vui để một năm chúng con được hưởng phước lành, an yên."</p>
+            <p>"Thầy có mặt cho chúng con trong những ngày xuân, trao cho chúng con những nụ cười tươi như hoa cùng những bao lì xì đỏ, những lời chúc may mắn, tài lộc, bình an, yên vui để một năm chúng con được hưởng phước lành, an yên."</p>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
                 <div class="aspect-[4/3]"><img data-image="step5_xuan_1" class="story-img w-full h-full object-cover"></div>
                 <div class="aspect-[4/3]"><img data-image="step5_xuan_2" class="story-img w-full h-full object-cover"></div>
@@ -360,7 +417,7 @@
         <div class="w-full max-w-5xl mb-12">
             <h3 class="text-2xl font-bold text-orange-800 mb-4 font-script text-left px-4">Kỷ niệm Chu niên Lớp Chánh Tâm</h3>
             <div class="quote-box mx-0 max-w-full mb-6">
-                <p>"Thầy hiện diện để chứng minh, cùng nhìn lại hành trình của Chánh Tâm trong chu niên hằng năm. Thầy thắp lên ngọn đèn từ bi và trí tuệ, soi đường cho chúng con trong hành trình xây dựng, gìn giữ lớp trong năm tiếp theo. Cùng chúng con dâng lời phát nguyện... Lớp được như ngày hôm nay một phần là nhờ có Thầy. Và có Thầy ở đó, lòng chúng con mới thầy đủ đầy và trọn vẹn."</p>
+                <p>"Thầy hiện diện để chứng minh, cùng nhìn lại hành trình của Chánh Tâm trong chu niên hằng năm. Thầy thắp lên ngọn đèn từ bi và trí tuệ, soi đường cho chúng con trong hành trình xây dựng, gìn giữ lớp trong năm tiếp theo. Cùng chúng con dâng lời phát nguyện cho một năm phụng sự bằng tâm từ bi và yêu thương rộng lớn. Tuy đây chỉ là một buổi lễ nhưng đối với chúng con đây cũng là lúc chúng con có cơ hội tri ân Thầy về một hành trình đồng hành cùng chúng con trên mọi hoạt động. Lớp được như ngày hôm nay một phần là nhờ có Thầy. Và có Thầy ở đó, lòng chúng con mới thầy đủ đầy và trọn vẹn. "</p>
             </div>
             <div class="grid grid-cols-2 md:grid-cols-3 gap-3 px-4">
                 <div class="aspect-video"><img data-image="step5_chunien_1" class="story-img w-full h-full object-cover"></div>
@@ -376,7 +433,7 @@
         <div class="w-full max-w-5xl mb-12">
             <h3 class="text-2xl font-bold text-orange-800 mb-4 font-script px-4">Bình an & Cầu nguyện</h3>
             <div class="on-note-box mx-4 mb-6">
-                <p>"Đối với chúng con chỉ cần thấy bóng dáng Thầy xuất hiện, chúng con đã thấy bình an. Thầy không chỉ mang lại sự an yên cho chúng con thông qua thân hành mà Thầy còn nhất tâm nhất ý cầu nguyện cho chúng con và gia đình được an thông qua các buổi lễ phóng sanh của lớp. Thầy hướng dẫn chúng con cách để chúng con tự thực tập chuyển hóa những bất an trong lòng khi ở một mình..."</p>
+                <p>"Thầy nhất tâm nhất ý cầu nguyện cho chúng con và gia đình được an thông qua các buổi lễ phóng sanh của lớp. Thầy hướng dẫn chúng con cách để chúng con tự thực tập chuyển hóa những bất an trong lòng khi ở một mình. Nhờ vậy mà chúng con có thêm nhiều phương pháp để tự thực hành ở nhà."</p>
             </div>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3 px-4">
                 <div class="aspect-[3/4]"><img data-image="step5_binhan_1" class="story-img"></div>
@@ -443,7 +500,7 @@
         </div>
 
         <div class="quote-box">
-            <p>"Thầy hoan hỷ cho chúng con được nuôi dưỡng lòng biết ơn, lối sống nghĩa tình khi đã dành thời gian để có mặt cùng chúng con qua các mùa lễ Vu Lan, 20/11.</p>
+            <p>"Thầy hoan hỷ cho chúng con được nuôi dưỡng lòng biết ơn, tôn sư trọng đạo khi đã dành thời gian để có mặt cùng chúng con qua các mùa lễ Vu Lan, 20/11. Những lúc như vậy niềm vui của chúng con đơn giản là sự có mặt của Thầy. </p>
             <p class="mt-2 text-orange-700 font-bold">Những lúc như vậy niềm vui của chúng con đơn giản là sự có mặt của Thầy."</p>
         </div>
         
@@ -465,7 +522,7 @@
 
         <div class="on-note-box border-4 border-yellow-400">
             <p class="text-justify">
-                "Sự đồng hành đôi lúc là đi cùng nhau, đôi khi là lại là sự ủng hộ, đứng phía sau tài trợ để chúng con có nguồn lực tiến lên. Cảm ơn Thầy vì đã luôn ủng hộ mọi hoạt động mà chúng con đã đề ra, là “nhà tài trợ vàng, bạc, kim cương,...” cho các cuộc thi tìm kiếm tài năng”, cho những buổi tập luyện chuẩn bị cho các hoạt động của lớp, các hoạt động trung thu, mùa xuân yêu thương, khóa tu,... Chính nhờ sự chung sức của Thầy mà chúng con có nhiều sân chơi để hiểu về chính mình, có cơ hội để thử sức và hoàn thiện bản thân mỗi ngày. Trân quý lắm ạ!"
+                "Sự đồng hành đôi lúc là đi cùng nhau, đôi khi lại là sự ủng hộ, đứng phía sau tài trợ để chúng con có nguồn lực tiến lên. Cảm ơn Thầy vì đã luôn ủng hộ mọi hoạt động mà chúng con đã đề ra, là “nhà tài trợ vàng, bạc, kim cương,...” cho các cuộc thi tìm kiếm tài năng”, cho những buổi tập luyện chuẩn bị cho các hoạt động của lớp, các hoạt động trung thu, mùa xuân yêu thương, khóa tu,... Chính nhờ sự chung sức của Thầy mà chúng con có nhiều sân chơi để hiểu về chính mình, có cơ hội để thử sức và hoàn thiện bản thân mỗi ngày. Trân quý lắm ạ!"
             </p>
         </div>
         
@@ -474,7 +531,7 @@
 
     <section id="step-9" class="step">
         <h2 class="text-3xl md:text-4xl font-heading text-orange-800 mb-8 uppercase tracking-wider px-4 text-center">
-            Vô số lần có mặt âm thầm
+            Vô số lần có mặt thầm lặng
         </h2>
         
         <div class="on-note-box border-4 border-orange-300 mb-8 mx-4">
@@ -821,13 +878,25 @@
                             
                             if (content.trim() !== '') {
                                 hasWishes = true;
-                                const wishHtml = `
-                                    <div class="text-left mb-8 pb-6 border-b border-orange-100 last:border-0 last:mb-0 last:pb-0">
-                                        <p class="font-bold text-orange-800 mb-3 text-lg uppercase">${name}</p>
-                                        <p class="italic text-gray-700 text-justify leading-relaxed text-[1.1rem]">"${content.replace(/\n/g, '<br>')}"</p>
-                                    </div>
-                                `;
-                                container.insertAdjacentHTML('beforeend', wishHtml);
+                                const card = document.createElement('button');
+                                card.type = 'button';
+                                card.className = 'wish-card';
+                                card.setAttribute('aria-expanded', 'false');
+
+                                const nameElement = document.createElement('p');
+                                nameElement.className = 'wish-card-name';
+                                nameElement.textContent = name;
+
+                                const contentElement = document.createElement('p');
+                                contentElement.className = 'wish-card-content';
+                                contentElement.textContent = `"${content}"`;
+
+                                card.append(nameElement, contentElement);
+                                card.addEventListener('click', () => {
+                                    const isExpanded = card.classList.toggle('is-expanded');
+                                    card.setAttribute('aria-expanded', String(isExpanded));
+                                });
+                                container.appendChild(card);
                             }
                         }
                     }
@@ -860,6 +929,27 @@
                 
                 setTimeout(() => el.remove(), 11000);
             }, 700);
+        }
+
+        let navigationTooltipShowTimer;
+        let navigationTooltipHideTimer;
+
+        function navigateWithTooltip(button, nextStepNum, transitionText) {
+            goToStep(nextStepNum, transitionText);
+
+            clearTimeout(navigationTooltipShowTimer);
+            clearTimeout(navigationTooltipHideTimer);
+            document.querySelectorAll('.navigation-tooltip').forEach(tooltip => {
+                tooltip.classList.remove('is-visible');
+            });
+
+            const tooltip = button.parentElement.querySelector('.navigation-tooltip');
+            navigationTooltipShowTimer = setTimeout(() => {
+                tooltip.classList.add('is-visible');
+                navigationTooltipHideTimer = setTimeout(() => {
+                    tooltip.classList.remove('is-visible');
+                }, 3000);
+            }, 2400);
         }
 
         function goToStep(nextStepNum, transitionText) {
