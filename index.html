@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đi gặp mùa thu - Thầy Vân Pháp</title>
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="./assets/favicon/logo.png" />
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -54,7 +57,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: #1a1a1a; /* Màu đen nhánh để chuyển cảnh */
+            background: #1a1a1a; 
             display: flex;
             justify-content: center;
             align-items: center;
@@ -122,7 +125,7 @@
             transform: scale(1.05);
         }
 
-        /* Hộp văn bản (Quote / Note) */
+        /* Hộp văn bản */
         .quote-box {
             background: rgba(255, 255, 255, 0.7);
             border-left: 5px solid var(--primary-orange);
@@ -160,13 +163,30 @@
             border: 4px solid white;
             box-shadow: 0 8px 20px rgba(0,0,0,0.1);
             transition: transform 0.3s;
+            background-color: #fde68a; /* Màu nền placeholder khi chưa có ảnh */
         }
         .story-img:hover {
             transform: translateY(-5px);
         }
 
         .step-title {
-            color: #228B22; /* Màu xanh lá tạo điểm nhấn nhẹ */
+            color: #228B22; 
+        }
+
+        /* Thanh cuộn Lời chúc */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #fef3c7; 
+            border-radius: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #f59e0b; 
+            border-radius: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #d97706; 
         }
     </style>
 </head>
@@ -180,11 +200,50 @@
         <div class="transition-text font-heading" id="overlay-text"></div>
     </div>
 
+    <!-- Menu Widget bên phải -->
+    <div class="fixed right-4 bottom-8 md:right-8 md:bottom-12 flex flex-col gap-4 z-[500]">
+        <!-- Nút Lời chúc -->
+        <div class="relative group flex items-center justify-end">
+            <span class="absolute right-full mr-4 px-3 py-1.5 bg-white text-orange-900 text-sm font-bold rounded-lg shadow-md opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap pointer-events-none border border-orange-100">
+                Xem lời chúc
+                <span class="absolute top-1/2 -right-1.5 -translate-y-1/2 w-3 h-3 bg-white transform rotate-45 border-r border-t border-orange-100"></span>
+            </span>
+            <button onclick="goToStep(11, 'Gửi gắm yêu thương...')" class="w-12 h-12 md:w-14 md:h-14 bg-white text-orange-600 rounded-full flex items-center justify-center shadow-[0_4px_15px_rgba(245,158,11,0.3)] hover:bg-orange-50 hover:scale-110 transition-all duration-300 border-2 border-orange-200 cursor-pointer">
+                <svg class="w-6 h-6 md:w-7 md:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+            </button>
+        </div>
+
+        <!-- Nút Thư viện ảnh -->
+        <div class="relative group flex items-center justify-end">
+            <span class="absolute right-full mr-4 px-3 py-1.5 bg-white text-orange-900 text-sm font-bold rounded-lg shadow-md opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap pointer-events-none border border-orange-100">
+                Thư viện ảnh
+                <span class="absolute top-1/2 -right-1.5 -translate-y-1/2 w-3 h-3 bg-white transform rotate-45 border-r border-t border-orange-100"></span>
+            </span>
+            <button onclick="goToStep(12, 'Nhìn lại khoảnh khắc...')" class="w-12 h-12 md:w-14 md:h-14 bg-white text-orange-600 rounded-full flex items-center justify-center shadow-[0_4px_15px_rgba(245,158,11,0.3)] hover:bg-orange-50 hover:scale-110 transition-all duration-300 border-2 border-orange-200 cursor-pointer">
+                <svg class="w-6 h-6 md:w-7 md:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+            </button>
+        </div>
+
+        <!-- Nút Về trang đầu -->
+        <div class="relative group flex items-center justify-end">
+            <span class="absolute right-full mr-4 px-3 py-1.5 bg-white text-orange-900 text-sm font-bold rounded-lg shadow-md opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap pointer-events-none border border-orange-100">
+                Về trang đầu
+                <span class="absolute top-1/2 -right-1.5 -translate-y-1/2 w-3 h-3 bg-white transform rotate-45 border-r border-t border-orange-100"></span>
+            </span>
+            <button onclick="goToStep(1, 'Hành trình bắt đầu...')" class="w-12 h-12 md:w-14 md:h-14 bg-orange-500 text-white rounded-full flex items-center justify-center shadow-[0_4px_15px_rgba(245,158,11,0.4)] hover:bg-orange-600 hover:scale-110 transition-all duration-300 border-2 border-white cursor-pointer">
+                <svg class="w-6 h-6 md:w-7 md:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- CÁC STEP NỘI DUNG (1-12) -->
+
     <section id="step-1" class="step active">
         <h1 class="text-5xl md:text-7xl text-orange-800 font-script mb-8 font-bold">Đi gặp Mùa Thu</h1>
         
         <div class="w-64 h-64 md:w-80 md:h-80 rounded-full border-4 border-orange-500 overflow-hidden mb-6 shadow-2xl">
-            <img src="https://placehold.co/600x600/3A4F41/FDFBF7?text=Thầy+Vân+Pháp+tĩnh+tọa" alt="Thầy Vân Pháp tĩnh tọa" class="w-full h-full object-cover">
+            <!-- Sử dụng data-image để gọi hình ảnh từ JS -->
+            <img data-image="step1_avatar" alt="Thầy Vân Pháp tĩnh tọa" class="w-full h-full object-cover">
         </div>
         
         <h2 class="text-2xl md:text-3xl font-bold text-orange-900 font-heading tracking-widest uppercase">– Thầy Vân Pháp –</h2>
@@ -207,7 +266,7 @@
         </h2>
         
         <div class="w-full max-w-3xl mb-6">
-            <img src="https://placehold.co/800x500/8B5A2B/FDFBF7?text=Thầy+mỉm+cười+ấm+áp+bên+Ba+và+Mẹ" alt="Thầy bên gia đình" class="story-img">
+            <img data-image="step2_family" alt="Thầy bên gia đình" class="story-img">
         </div>
 
         <div class="quote-box">
@@ -223,16 +282,21 @@
         </h2>
         
         <div class="grid md:grid-cols-2 gap-4 w-full max-w-4xl mb-8">
-            <div class="aspect-[4/3]"><img src="https://placehold.co/600x450/6A4E23/FDFBF7?text=Thầy+mỉm+cười+bên+Ôn" alt="Thầy bên Ôn" class="story-img"></div>
-            <div class="aspect-[4/3]"><img src="https://placehold.co/600x450/4B6043/FDFBF7?text=Khất+thực+cùng+Ôn" alt="Đi khất thực" class="story-img"></div>
+            <div class="aspect-[4/3]"><img data-image="step3_on_1" alt="Thầy bên Ôn" class="story-img w-full h-full object-cover"></div>
+            <div class="aspect-[4/3]"><img data-image="step3_on_2" alt="Đi khất thực" class="story-img w-full h-full object-cover"></div>
+            <div class="md:col-span-2 aspect-[4/3]"><img data-image="step3_on_3" alt="Thầy và Ôn" class="story-img w-full h-full object-cover"></div>
+        </div>
+
+        <div class="w-full max-w-4xl mb-8 rounded-xl overflow-hidden border-4 border-white shadow-xl bg-black aspect-video">
+            <video controls class="w-full h-full object-cover" preload="metadata">
+                <source src="./assets/video/ON_CHUC_SINH_NHAT_THAY_VAN_PHAP.mp4" type="video/mp4">
+                Trình duyệt của bạn không hỗ trợ thẻ video.
+            </video>
         </div>
 
         <div class="on-note-box">
-            <p class="mb-4">
-                "Thầy là người học trò chăm ngoan, người đệ tử thân cận và là cánh tay nối dài của Ôn. Nhìn hình ảnh Thầy luôn đi theo bước chân của Ôn để cùng trau dồi Pháp học, Pháp hành mỗi ngày, cách Thầy đem những gì học được để lan tỏa Phật Pháp trong đời sống. Chúng con như được có thêm một tấm gương tiêu biểu để noi theo và cố gắng 'tiến bước theo hương thơm nhà lưu truyền'."
-            </p>
             <p>
-                "Qua cách Thầy chăm sóc Ôn chúng con cảm nhận được tình cảm thầy trò sâu sắc hơn và học thêm được nhiều cách để quan tâm người Thầy của mình. Và vì Thầy là học trò của Ôn, chúng con cũng là những người học trò của Ôn. Nên may mắn thay nhiều lúc Thầy như một người huy trưởng làm cầu nối, đưa những tâm tư nguyện vọng của chúng con đến với Ôn. Để Ôn có thể hiểu được suy nghĩ của giới trẻ của chúng con, từ đó có những bài pháp phù hợp giúp chúng con lớn lên từng ngày."
+                "Nhìn hình ảnh Thầy luôn đi theo bước chân của Ôn để cùng trau dồi Pháp học, Pháp hành mỗi ngày, cách Thầy đem những gì học được để lan tỏa Phật Pháp trong đời sống. Chúng con như được có thêm một tấm gương tiêu biểu để noi theo và cố gắng “tiến bước theo hương thơm nhà lưu truyền”. Qua cách Thầy chăm sóc Ôn chúng con cảm nhận được tình cảm thầy trò sâu sắc hơn và học thêm được nhiều cách để quan tâm người Thầy của mình. Và vì Thầy là học trò của Ôn, chúng con cũng là những người học trò của Ôn. Nên may mắn thay nhiều lúc Thầy như một người huy trưởng làm cầu nối, đưa những tâm tư nguyện vọng của chúng con đến với Ôn. Để Ôn có thể hiểu được suy nghĩ của giới trẻ của chúng con, từ đó có những bài pháp phù hợp giúp chúng con lớn lên từng ngày."
             </p>
         </div>
         
@@ -257,13 +321,22 @@
         </div>
 
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3 w-full max-w-5xl mx-auto px-4">
-            <div class="col-span-2 row-span-2 aspect-square"><img src="https://placehold.co/600x600/C88A44/fff?text=Dạy+Kinh+Thập+Thiện" class="story-img"></div>
-            <div class="aspect-square"><img src="https://placehold.co/300x300/8B5A2B/fff?text=Áo+ấm+mùa+đông" class="story-img"></div>
-            <div class="aspect-square"><img src="https://placehold.co/300x300/A0522D/fff?text=Viết+bảng" class="story-img"></div>
-            <div class="aspect-square"><img src="https://placehold.co/300x300/CD853F/fff?text=Cầm+mic+giảng" class="story-img"></div>
-            <div class="aspect-square"><img src="https://placehold.co/300x300/D2691E/fff?text=Trời+mưa+vẫn+dạy" class="story-img"></div>
-            <div class="col-span-2 md:col-span-2 aspect-[2/1]"><img src="https://placehold.co/600x300/8B4513/fff?text=Kinh+Chuyển+Pháp+Luân" class="story-img"></div>
-            <div class="col-span-2 md:col-span-2 aspect-[2/1]"><img src="https://placehold.co/600x300/A52A2A/fff?text=Nụ+cười+hiền+hòa" class="story-img"></div>
+            <!-- 5 Ảnh đầu (tỉ lệ vuông 1:1) -->
+            <div class="col-span-2 row-span-2 aspect-square"><img data-image="step4_teach_1" class="story-img w-full h-full object-cover"></div>
+            <div class="aspect-square"><img data-image="step4_teach_2" class="story-img w-full h-full object-cover"></div>
+            <div class="aspect-square"><img data-image="step4_teach_3" class="story-img w-full h-full object-cover"></div>
+            <div class="aspect-square"><img data-image="step4_teach_4" class="story-img w-full h-full object-cover"></div>
+            <div class="aspect-square"><img data-image="step4_teach_5" class="story-img w-full h-full object-cover"></div>
+            
+            <!-- 4 Ảnh giữa (tỉ lệ 4:3) -->
+            <div class="aspect-[4/3]"><img data-image="step4_teach_6" class="story-img w-full h-full object-cover"></div>
+            <div class="aspect-[4/3]"><img data-image="step4_teach_7" class="story-img w-full h-full object-cover"></div>
+            <div class="aspect-[4/3]"><img data-image="step4_teach_8" class="story-img w-full h-full object-cover"></div>
+            <div class="aspect-[4/3]"><img data-image="step4_teach_9" class="story-img w-full h-full object-cover"></div>
+            
+            <!-- 2 Ảnh cuối (tỉ lệ 4:3 kéo dài 2 cột) -->
+            <div class="col-span-2 aspect-[4/3]"><img data-image="step4_teach_10" class="story-img w-full h-full object-cover"></div>
+            <div class="col-span-2 aspect-[4/3]"><img data-image="step4_teach_11" class="story-img w-full h-full object-cover"></div>
         </div>
         
         <button class="btn-orange" onclick="goToStep(5, 'Người Cha đồng hành trên mọi nẻo đường...')">Tiếp tục</button>
@@ -277,7 +350,11 @@
         <div class="on-note-box w-full mb-10 border-t-4 border-t-orange-400">
             <h3 class="text-2xl font-bold text-orange-800 mb-3 font-script">Ngày Xuân</h3>
             <p>"Thầy có mặt cho chúng con trong những ngày xuân, trao cho chúng con những nụ cười tươi như hoa mùa xuân, trao đi những chiếc bao lì xì đỏ, những lời chúc may mắn, tài lộc, bình an, yên vui để một năm chúng con được hưởng phước lành, an yên."</p>
-            <p class="text-sm italic text-gray-500 mt-2">(Đang tìm ảnh Tết...)</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+                <div class="aspect-[4/3]"><img data-image="step5_xuan_1" class="story-img w-full h-full object-cover"></div>
+                <div class="aspect-[4/3]"><img data-image="step5_xuan_2" class="story-img w-full h-full object-cover"></div>
+                <div class="aspect-[4/3]"><img data-image="step5_xuan_3" class="story-img w-full h-full object-cover"></div>
+            </div>
         </div>
 
         <div class="w-full max-w-5xl mb-12">
@@ -286,12 +363,13 @@
                 <p>"Thầy hiện diện để chứng minh, cùng nhìn lại hành trình của Chánh Tâm trong chu niên hằng năm. Thầy thắp lên ngọn đèn từ bi và trí tuệ, soi đường cho chúng con trong hành trình xây dựng, gìn giữ lớp trong năm tiếp theo. Cùng chúng con dâng lời phát nguyện... Lớp được như ngày hôm nay một phần là nhờ có Thầy. Và có Thầy ở đó, lòng chúng con mới thầy đủ đầy và trọn vẹn."</p>
             </div>
             <div class="grid grid-cols-2 md:grid-cols-3 gap-3 px-4">
-                <div class="aspect-video"><img src="https://placehold.co/400x225/8B0000/fff?text=Thắp+nến" class="story-img"></div>
-                <div class="aspect-video"><img src="https://placehold.co/400x225/A52A2A/fff?text=Cắt+bánh" class="story-img"></div>
-                <div class="aspect-video"><img src="https://placehold.co/400x225/B22222/fff?text=Lời+phát+nguyện" class="story-img"></div>
-                <div class="aspect-video"><img src="https://placehold.co/400x225/CD5C5C/fff?text=Học+chúng" class="story-img"></div>
-                <div class="aspect-video"><img src="https://placehold.co/400x225/DC143C/fff?text=Chư+Tăng+chứng+minh" class="story-img"></div>
-                <div class="aspect-video"><img src="https://placehold.co/400x225/800000/fff?text=Chụp+ảnh+tập+thể" class="story-img"></div>
+                <div class="aspect-video"><img data-image="step5_chunien_1" class="story-img w-full h-full object-cover"></div>
+                <div class="aspect-video"><img data-image="step5_chunien_2" class="story-img w-full h-full object-cover"></div>
+                <div class="aspect-video"><img data-image="step5_chunien_3" class="story-img w-full h-full object-cover"></div>
+                <div class="aspect-video"><img data-image="step5_chunien_4" class="story-img w-full h-full object-cover"></div>
+                <div class="aspect-video"><img data-image="step5_chunien_5" class="story-img w-full h-full object-cover"></div>
+                <div class="aspect-video"><img data-image="step5_chunien_6" class="story-img w-full h-full object-cover"></div>
+                <div class="col-span-2 md:col-span-3 aspect-[21/9]"><img data-image="step5_chunien_7" class="story-img w-full h-full object-cover"></div>
             </div>
         </div>
 
@@ -301,10 +379,10 @@
                 <p>"Đối với chúng con chỉ cần thấy bóng dáng Thầy xuất hiện, chúng con đã thấy bình an. Thầy không chỉ mang lại sự an yên cho chúng con thông qua thân hành mà Thầy còn nhất tâm nhất ý cầu nguyện cho chúng con và gia đình được an thông qua các buổi lễ phóng sanh của lớp. Thầy hướng dẫn chúng con cách để chúng con tự thực tập chuyển hóa những bất an trong lòng khi ở một mình..."</p>
             </div>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3 px-4">
-                <div class="aspect-[3/4]"><img src="https://placehold.co/300x400/2F4F4F/fff?text=Dâng+sớ+cầu+an" class="story-img"></div>
-                <div class="aspect-[3/4]"><img src="https://placehold.co/300x400/556B2F/fff?text=Khóa+lễ" class="story-img"></div>
-                <div class="aspect-[3/4]"><img src="https://placehold.co/300x400/6B8E23/fff?text=Phóng+sanh" class="story-img"></div>
-                <div class="aspect-[3/4]"><img src="https://placehold.co/300x400/8FBC8F/fff?text=Thắp+đăng" class="story-img"></div>
+                <div class="aspect-[3/4]"><img data-image="step5_binhan_1" class="story-img"></div>
+                <div class="aspect-[3/4]"><img data-image="step5_binhan_2" class="story-img"></div>
+                <div class="aspect-[3/4]"><img data-image="step5_binhan_3" class="story-img"></div>
+                <div class="aspect-[3/4]"><img data-image="step5_binhan_4" class="story-img"></div>
             </div>
         </div>
 
@@ -314,15 +392,20 @@
                 <p class="text-right">"Thầy là người truyền giới cho chúng con thông qua buổi lễ Quy Y Tam Bảo. Thầy chứng kiến khoảnh khắc chúng con một lần nữa được sinh ra trong gia đình Phật Pháp, cho chúng con những giới pháp hành trì để có hạnh phúc trong cuộc sống và nuôi dưỡng hạnh phúc của muôn loài. Hạnh phúc thay!"</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 px-4">
-                <div class="aspect-square"><img src="https://placehold.co/400x400/DAA520/fff?text=Truyền+giới" class="story-img"></div>
-                <div class="aspect-square"><img src="https://placehold.co/400x400/B8860B/fff?text=Toàn+cảnh+lễ" class="story-img"></div>
-                <div class="aspect-square"><img src="https://placehold.co/400x400/CD853F/fff?text=Nhận+Điệp" class="story-img"></div>
+                <div class="aspect-square"><img data-image="step5_quyy_1" class="story-img"></div>
+                <div class="aspect-square"><img data-image="step5_quyy_2" class="story-img"></div>
+                <div class="aspect-square"><img data-image="step5_quyy_3" class="story-img"></div>
             </div>
         </div>
 
         <div class="w-full max-w-5xl on-note-box mx-4 bg-orange-50 border-orange-200">
             <h3 class="text-2xl font-bold text-orange-800 mb-3 font-script">Lễ Quá đường & Cúng dường chư Tăng</h3>
             <p>"Thầy cho chúng con được có cơ hội cúng dường chư Tăng thông qua lễ quá đường. Qua đây chúng con được làm giàu thêm mảnh ruộng phước đức của chúng con."</p>
+            <div class="grid grid-cols-2 gap-4 mt-6">
+                <div class="aspect-[4/3]"><img data-image="step5_quaduong_1" class="story-img w-full h-full object-cover"></div>
+                <div class="aspect-[4/3]"><img data-image="step5_quaduong_2" class="story-img w-full h-full object-cover"></div>
+                <div class="col-span-2 aspect-[21/9]"><img data-image="step5_quaduong_3" class="story-img w-full h-full object-cover"></div>
+            </div>
         </div>
 
         <button class="btn-orange" onclick="goToStep(6, 'Thầy trong những mùa khóa tu...')">Tiếp tục</button>
@@ -333,8 +416,10 @@
             Thầy trong những mùa khóa tu
         </h2>
         
-        <div class="w-full max-w-4xl mb-6">
-            <img src="https://placehold.co/1000x550/2E8B57/FDFBF7?text=Thầy+trong+khóa+tu+cùng+chúng+con" alt="Thầy trong khóa tu" class="story-img">
+        <div class="flex flex-col gap-6 w-full max-w-4xl mb-6">
+            <div class="aspect-[4/3]"><img data-image="step6_khoatu_1" class="story-img w-full h-full object-cover"></div>
+            <div class="aspect-[4/3]"><img data-image="step6_khoatu_2" class="story-img w-full h-full object-cover"></div>
+            <div class="aspect-[4/3]"><img data-image="step6_khoatu_3" class="story-img w-full h-full object-cover"></div>
         </div>
 
         <div class="on-note-box">
@@ -351,8 +436,10 @@
             Lễ Vu Lan & 20/11
         </h2>
         
-        <div class="w-full max-w-3xl mb-6">
-            <img src="https://placehold.co/800x500/8B0000/FDFBF7?text=Ngày+lễ+Vu+Lan+và+20/11" alt="Vu Lan và 20/11" class="story-img">
+        <div class="flex flex-col gap-6 w-full max-w-4xl mb-6">
+            <div class="aspect-[4/3]"><img data-image="step7_vulan_1" class="story-img w-full h-full object-cover"></div>
+            <div class="aspect-[4/3]"><img data-image="step7_vulan_2" class="story-img w-full h-full object-cover"></div>
+            <div class="aspect-[4/3]"><img data-image="step7_vulan_3" class="story-img w-full h-full object-cover"></div>
         </div>
 
         <div class="quote-box">
@@ -368,59 +455,90 @@
             Sự ủng hộ vững chắc phía sau
         </h2>
         
-        <div class="w-full max-w-4xl mb-6">
-            <img src="https://placehold.co/900x500/DAA520/FDFBF7?text=Nhà+tài+trợ+vàng+cho+các+hoạt+động" alt="Tài trợ hoạt động" class="story-img">
+        <div class="grid grid-cols-2 md:grid-cols-6 gap-4 w-full max-w-5xl mb-6">
+            <div class="col-span-2 md:col-span-3 aspect-[4/3]"><img data-image="step8_taitro_1" class="story-img w-full h-full object-cover"></div>
+            <div class="col-span-2 md:col-span-3 aspect-[4/3]"><img data-image="step8_taitro_2" class="story-img w-full h-full object-cover"></div>
+            <div class="col-span-2 md:col-span-2 aspect-square"><img data-image="step8_taitro_3" class="story-img w-full h-full object-cover"></div>
+            <div class="col-span-2 md:col-span-2 aspect-square"><img data-image="step8_taitro_4" class="story-img w-full h-full object-cover"></div>
+            <div class="col-span-2 md:col-span-2 aspect-square md:col-start-auto col-start-1"><img data-image="step8_taitro_5" class="story-img w-full h-full object-cover"></div>
         </div>
 
         <div class="on-note-box border-4 border-yellow-400">
-            <p>
-                "Sự đồng hành đôi lúc là đi cùng nhau, đôi khi là lại là sự ủng hộ, đứng phía sau tài trợ để chúng con có nguồn lực tiến lên. Cảm ơn Thầy vì đã luôn ủng hộ mọi hoạt động mà chúng con đã đề ra, là “nhà tài trợ vàng, bạc, kim cương,...” cho các cuộc thi tìm kiếm tài năng, cho những buổi tập luyện chuẩn bị cho các hoạt động của lớp. Nhờ sự chung sức của Thầy mà chúng con có nhiều sân chơi để hiểu về chính mình, có cơ hội để thử sức và hoàn thiện bản thân."
+            <p class="text-justify">
+                "Sự đồng hành đôi lúc là đi cùng nhau, đôi khi là lại là sự ủng hộ, đứng phía sau tài trợ để chúng con có nguồn lực tiến lên. Cảm ơn Thầy vì đã luôn ủng hộ mọi hoạt động mà chúng con đã đề ra, là “nhà tài trợ vàng, bạc, kim cương,...” cho các cuộc thi tìm kiếm tài năng”, cho những buổi tập luyện chuẩn bị cho các hoạt động của lớp, các hoạt động trung thu, mùa xuân yêu thương, khóa tu,... Chính nhờ sự chung sức của Thầy mà chúng con có nhiều sân chơi để hiểu về chính mình, có cơ hội để thử sức và hoàn thiện bản thân mỗi ngày. Trân quý lắm ạ!"
             </p>
         </div>
         
-        <button class="btn-orange" onclick="goToStep(9, 'Lời tri ân sâu sắc nhất...')">Tiếp tục</button>
+        <button class="btn-orange" onclick="goToStep(9, 'Những khoảnh khắc âm thầm...')">Tiếp tục</button>
     </section>
 
     <section id="step-9" class="step">
-        <div class="p-8 bg-white/70 rounded-2xl border-2 border-orange-200 max-w-2xl shadow-xl mt-12">
-            <h2 class="text-5xl font-script text-orange-800 mb-8 text-center font-bold">Lời tri ân</h2>
-            <p class="text-[1.15rem] text-orange-900 leading-relaxed italic text-justify">
-                "Cứ mải miết với từng bước chân nhỏ, ngoảnh nhìn lại chúng con đã đi được cả dặm đường dài. Chánh Tâm đã đi một hành trình dài gần 20 năm, và trên hành trình ấy chúng con hạnh phúc khi có sự hiện diện của Thầy.
-                <br><br>Chúng con biết ơn lắm tình yêu thương, sự kiên nhẫn mà Thầy luôn dành cho chúng con. Nhờ có Thầy, chúng con biết học Phật không chỉ là học lời kinh tiếng kệ mà còn là học cách sống yêu thương, biết điều gì dễ thương, điều gì chưa dễ thương.
-                <br><br>Và tất thảy, Thầy đã trở thành ánh sáng dẫn đường chúng con đi. Đôi lúc chúng con còn vụng về, còn chậm bước, nhưng Thầy luôn ở đó, vững chãi mà lắng nghe chúng con. Để chúng con biết, mọi chênh vênh đều sẽ qua, chỉ cần không buông bỏ.
-                <br><br>Ngoài cuộc sống, chúng con mỗi người mỗi ngã rẽ khác nhau, nhưng cứ đến mỗi chiều chủ nhật, đến chùa là học trò của Ôn của Thầy, vô tư và bình dị. Để mỗi chủ nhật chúng con lại quay về chùa như quay về với bản thân trong lành nhất.
-                <br><br>Nhân ngày tiếp nối của Thầy, chúng con xin thành kính tri ân công dạy dỗ của Thầy và nguyện sẽ cố gắng gìn giữ, nuôi lớn những điều tốt đẹp mà Thầy đã trao truyền cho chúng con. 🧡"
+        <h2 class="text-3xl md:text-4xl font-heading text-orange-800 mb-8 uppercase tracking-wider px-4 text-center">
+            Vô số lần có mặt âm thầm
+        </h2>
+        
+        <div class="on-note-box border-4 border-orange-300 mb-8 mx-4">
+            <p class="text-justify text-lg text-orange-900 italic font-semibold">
+                "Ôi, nhìn lại một hành trình dài Chánh Tâm trưởng thành không thể nào thiếu được hình bóng của Thầy. Còn vô số lần có mặt âm thầm của Thầy mà chúng con không thể nào kể siết được. Chỉ có thể gói gọn trong hai từ “Biết Ơn” và những bức ảnh lưu giữ kỷ niệm sau."
             </p>
         </div>
-        <button class="btn-orange" onclick="goToStep(10, 'Những lời nhắn gửi yêu thương...')">Đến phần cuối</button>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 w-full max-w-5xl mb-6 px-4">
+            <div class="aspect-[4/3]"><img data-image="step9_kyniem_1" class="story-img w-full h-full object-cover"></div>
+            <div class="aspect-[4/3]"><img data-image="step9_kyniem_2" class="story-img w-full h-full object-cover"></div>
+            <div class="aspect-[4/3]"><img data-image="step9_kyniem_3" class="story-img w-full h-full object-cover"></div>
+            <div class="aspect-[4/3]"><img data-image="step9_kyniem_4" class="story-img w-full h-full object-cover"></div>
+            <div class="aspect-[4/3]"><img data-image="step9_kyniem_5" class="story-img w-full h-full object-cover"></div>
+            <div class="aspect-[4/3]"><img data-image="step9_kyniem_6" class="story-img w-full h-full object-cover"></div>
+        </div>
+        
+        <button class="btn-orange" onclick="goToStep(10, 'Lời tri ân sâu sắc nhất...')">Tiếp tục</button>
     </section>
 
     <section id="step-10" class="step">
+        <div class="p-8 bg-white/70 rounded-2xl border-2 border-orange-200 max-w-3xl shadow-xl mt-12">
+            <h2 class="text-4xl md:text-5xl font-script text-orange-800 mb-8 text-center font-bold leading-relaxed">Đi Gặp Mùa Thu Trong Lòng Chúng Con</h2>
+            <p class="text-[1.15rem] text-orange-900 leading-relaxed italic text-justify">
+                "Thầy đến với cuộc đời vào mùa thu chúng con nghĩ là có lý do cả. Kể từ những ngày đầu Thầy xuất hiện ở Chánh Tâm, chúng con đã cảm nhận được sự êm dịu, nhẹ nhàng như cơn gió mát mùa thu từ bước đi, giọng nói và cả nụ cười của Thầy. Mọi thứ xuất phát từ Thầy luôn khiến những người xung quanh cảm thấy được chữa lành. Càng được tiếp xúc gần với Thầy chúng con lại cảm nhận rõ hơn tình thương rộng lớn của Thầy, Thầy luôn ôm ấp, kiên nhẫn lắng nghe sâu những câu chuyện của chúng con, luôn đáp lời, động viên để giúp chúng con chuyển hóa những nỗi khổ trong mình. Chúng con hay truyền miệng nhau “Vì sao Thầy lại có thể luôn an lành như vậy nhỉ! Thầy không bao giờ to tiếng hay tức giận hay thiệt ha!”. Và chúng con nghĩ năng lượng tĩnh lặng như mặt hồ mùa thu đó được phát ra là nhờ sự tinh tấn hành trì của Thầy. Chúng con sẽ học theo thân hành của Thầy, sẽ thực tập Phật pháp mỗi ngày để chuyển hóa tâm mình, chỉ cần tâm an tướng chúng con cũng sẽ phát ra năng lượng an như Thầy. Và chúng con nghĩ niềm vui lớn nhất của một Người Thầy là thấy chúng con bình an từng ngày.
+                <br><br>Cảm ơn những cơn gió dịu nhẹ thầy đã thổi vào tâm hồn chúng con. Cảm ơn sự yên bình Thầy đã trao truyền để chúng con có một chỗ dựa tinh thần vững chắc. Cảm ơn Thầy đã tạo nên một trời thu tươi mát để chúng con tìm về nghỉ ngơi, an trú.
+                <br><br>
+                <span class="block text-center font-bold text-orange-700 text-xl leading-loose font-script">
+                    “Trời mùa thu êm đẹp<br>
+                    gió xoa dịu lòng người<br>
+                    nụ cười Thầy tươi sáng<br>
+                    ấm áp và rạng ngời.<br><br>
+                    Thầy là dòng suối mát<br>
+                    tưới hạt giống thương yêu<br>
+                    nụ từ bi hé nở<br>
+                    cuộc đời đẹp thêm nhiều.”
+                </span>"
+            </p>
+        </div>
+        <button class="btn-orange" onclick="goToStep(11, 'Những lời nhắn gửi yêu thương...')">Đến phần cuối</button>
+    </section>
+
+    <section id="step-11" class="step">
         <h2 class="text-3xl font-heading text-orange-800 mb-4 uppercase tracking-widest mt-12">
             Lời chúc của những người học trò thân thương 🌿
         </h2>
         <p class="step-title font-script text-4xl mb-8 font-bold text-green-700">"Thầy trong con"</p>
         
-        <div class="w-full max-w-2xl bg-white p-6 rounded-xl shadow border-2 border-orange-300">
-            <!-- Mockup dữ liệu lời chúc để trang không bị trống nếu thiếu file JS -->
-            <div class="mb-4 pb-4 border-b border-gray-100 text-left">
-                <p class="font-bold text-orange-800 mb-1">Ban cán sự lớp Chánh Tâm</p>
-                <p class="italic text-gray-700">"Kính chúc Thầy một mùa thu thật ấm áp, nhiều sức khỏe và mãi là điểm tựa vững chắc cho chúng con trên con đường tu học."</p>
-            </div>
-            <div class="mb-4 pb-4 border-b border-gray-100 text-left">
-                <p class="font-bold text-orange-800 mb-1">Nhóm Học chúng</p>
-                <p class="italic text-gray-700">"Cảm ơn Thầy vì đã luôn kiên nhẫn, lắng nghe và thấu hiểu những băn khoăn của tuổi trẻ chúng con."</p>
-            </div>
-            <div class="text-left">
-                <p class="font-bold text-orange-800 mb-1">Một người học trò giấu tên</p>
-                <p class="italic text-gray-700">"Mỗi lần nhìn Thầy mỉm cười là chúng con thấy bình an. Mong Thầy luôn khỏe mạnh và an nhiên tự tại."</p>
+        <div class="w-full max-w-3xl bg-white p-6 md:p-8 rounded-xl shadow border-2 border-orange-300 max-h-[65vh] overflow-y-auto custom-scrollbar">
+            <div id="wishes-container">
+                <div class="flex justify-center items-center py-10">
+                    <svg class="animate-spin h-8 w-8 text-orange-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span class="ml-3 text-orange-600 font-medium">Đang tải lời chúc...</span>
+                </div>
             </div>
         </div>
 
-        <button class="btn-orange" onclick="goToStep(11, 'Những khoảnh khắc vô giá cùng Chánh Tâm...')">Tiếp tục</button>
+        <button class="btn-orange" onclick="goToStep(12, 'Những khoảnh khắc vô giá cùng Chánh Tâm...')">Tiếp tục</button>
     </section>
 
-    <section id="step-11" class="step">
+    <section id="step-12" class="step">
         <h2 class="text-3xl md:text-4xl font-heading text-orange-800 mb-6 uppercase tracking-wider text-center">
             Đại Gia Đình Chánh Tâm
         </h2>
@@ -429,37 +547,302 @@
             <p>"Những bước chân của chúng con ngày một vững chãi, vì biết rằng trên con đường này, chúng con vẫn đang bước đi cùng Thầy. Xin lưu giữ lại đây những nụ cười, những khoảnh khắc tuyệt đẹp của Thầy và trò để hành trình này mãi là một kỷ niệm đẹp trong lòng mỗi chúng con."</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-5xl mb-8 px-4">
-            <div class="aspect-[4/3] rounded-xl overflow-hidden border-4 border-white shadow-xl">
-                <img src="https://placehold.co/800x600/D2691E/FDFBF7?text=Tập+thể+Chánh+Tâm+cùng+Thầy" alt="Tập thể Chánh Tâm" class="w-full h-full object-cover transition-transform hover:scale-105 duration-300">
-            </div>
-            <div class="grid grid-cols-2 gap-4">
-                <div class="aspect-square rounded-xl overflow-hidden border-4 border-white shadow-lg">
-                    <img src="https://placehold.co/400x400/8B5A2B/FDFBF7?text=Nụ+cười+Thầy+trò" alt="Nụ cười Thầy trò" class="w-full h-full object-cover transition-transform hover:scale-105 duration-300">
-                </div>
-                <div class="aspect-square rounded-xl overflow-hidden border-4 border-white shadow-lg">
-                    <img src="https://placehold.co/400x400/CD853F/FDFBF7?text=Khoảnh+khắc+đáng+nhớ" alt="Khoảnh khắc đáng nhớ" class="w-full h-full object-cover transition-transform hover:scale-105 duration-300">
-                </div>
-                <div class="col-span-2 aspect-[2/1] rounded-xl overflow-hidden border-4 border-white shadow-lg">
-                    <img src="https://placehold.co/800x400/A0522D/FDFBF7?text=Đồng+hành+yêu+thương" alt="Đồng hành yêu thương" class="w-full h-full object-cover transition-transform hover:scale-105 duration-300">
-                </div>
-            </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 w-full max-w-6xl mb-12 px-4 mx-auto">
+            <!-- 50 Hình ảnh Đại Gia Đình Chánh Tâm -->
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_1" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_2" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_3" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_4" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_5" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_6" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_7" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_8" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_9" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_10" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_11" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_12" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_13" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_14" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_15" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_16" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_17" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_18" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_19" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_20" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_21" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_22" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_23" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_24" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_25" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_26" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_27" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_28" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_29" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_30" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_31" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_32" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_33" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_34" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_35" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_36" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_37" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_38" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_39" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_40" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_41" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_42" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_43" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_44" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_45" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_46" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_47" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_48" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_49" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
+            <div class="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md"><img data-image="step12_chanhtam_50" class="story-img w-full h-full object-cover transition-transform hover:scale-105 duration-300"></div>
         </div>
 
         <button class="btn-orange" onclick="location.reload()">Khép lại hành trình & Quay lại từ đầu</button>
     </section>
 
-    <!-- Nhạc nền (Thay đổi đường dẫn src thành file nhạc của bạn) -->
-    <audio id="bg-music" loop>
-        <source src="./assets/music/BACKGROUND_MUSIC.mp3" type="audio/mpeg">
+    <!-- Modal Xem Ảnh -->
+    <div id="image-modal" class="fixed inset-0 bg-black/95 z-[2000] hidden flex-col justify-center items-center opacity-0 transition-opacity duration-300">
+        <button onclick="closeLightbox()" class="absolute top-6 right-8 text-white text-5xl hover:text-orange-400 transition-colors z-50 cursor-pointer">&times;</button>
+        <div class="relative w-full max-w-6xl px-4 md:px-12 flex justify-between items-center h-full">
+            <button onclick="changeLightboxImage(-1)" class="text-white text-6xl hover:text-orange-500 transition-transform active:scale-90 select-none hidden md:block cursor-pointer">&#10094;</button>
+            <div class="w-full h-full flex justify-center items-center py-10 md:py-20">
+                <img id="lightbox-img" src="" class="w-[90vw] md:w-[75vw] max-w-4xl h-[50vh] md:h-[80vh] object-cover border-4 border-white rounded-lg shadow-2xl transition-opacity duration-200">
+            </div>
+            <button onclick="changeLightboxImage(1)" class="text-white text-6xl hover:text-orange-500 transition-transform active:scale-90 select-none hidden md:block cursor-pointer">&#10095;</button>
+        </div>
+        <div class="flex gap-20 absolute bottom-10 md:hidden z-50">
+            <button onclick="changeLightboxImage(-1)" class="text-white text-5xl hover:text-orange-500 transition-transform active:scale-90 select-none cursor-pointer">&#10094;</button>
+            <button onclick="changeLightboxImage(1)" class="text-white text-5xl hover:text-orange-500 transition-transform active:scale-90 select-none cursor-pointer">&#10095;</button>
+        </div>
+    </div>
+
+    <!-- Nhạc nền phần Hành trình (Step 2 - 9) -->
+    <audio id="bg-music-main" loop>
+        <source src="./assets/music/BACKGROUND_MUSIC.MP3" type="audio/mpeg">
+    </audio>
+
+    <!-- Nhạc nền phần Lời chúc & Hình ảnh (Step 10 - 12) -->
+    <audio id="bg-music-special" loop>
+        <source src="./assets/music/ON_THAY.mp3" type="audio/mpeg">
     </audio>
 
     <script>
+        // =========================================================================
+        // 1. BIẾN CẤU HÌNH ĐƯỜNG DẪN HÌNH ẢNH TOÀN TRANG
+        // Cập nhật đường dẫn ảnh thực tế trong máy của bạn tại đây (sử dụng dấu "/")
+        // =========================================================================
+        const IMAGE_CONFIG = {
+            // STEP 1
+            "step1_avatar": "./assets/images/step1_avatar.jpg",
+            
+            // STEP 2
+            "step2_family": "./assets/images/step2_family.jpg",
+            
+            // STEP 3
+            "step3_on_1": "./assets/images/step3_on_1.jpg",
+            "step3_on_2": "./assets/images/step3_on_2.jpg",
+            "step3_on_3": "./assets/images/step3_on_3.jpg",
+
+            // STEP 4
+            "step4_teach_1": "./assets/images/step4_teach_1.jpg",
+            "step4_teach_2": "./assets/images/step4_teach_2.jpg",
+            "step4_teach_3": "./assets/images/step4_teach_3.jpg",
+            "step4_teach_4": "./assets/images/step4_teach_4.jpg",
+            "step4_teach_5": "./assets/images/step4_teach_5.jpg",
+            "step4_teach_6": "./assets/images/step4_teach_6.jpg",
+            "step4_teach_7": "./assets/images/step4_teach_7.jpg",
+            "step4_teach_8": "./assets/images/step4_teach_8.jpg",
+            "step4_teach_9": "./assets/images/step4_teach_9.jpg",
+            "step4_teach_10": "./assets/images/step4_teach_10.jpg",
+            "step4_teach_11": "./assets/images/step4_teach_11.jpg",
+
+            // STEP 5 - Xuân
+            "step5_xuan_1": "./assets/images/step5_xuan_1.jpg",
+            "step5_xuan_2": "./assets/images/step5_xuan_2.jpg",
+            "step5_xuan_3": "./assets/images/step5_xuan_3.jpg",
+            // STEP 5 - Chu niên
+            "step5_chunien_1": "./assets/images/step5_chunien_1.jpg",
+            "step5_chunien_2": "./assets/images/step5_chunien_2.jpg",
+            "step5_chunien_3": "./assets/images/step5_chunien_3.jpg",
+            "step5_chunien_4": "./assets/images/step5_chunien_4.jpg",
+            "step5_chunien_5": "./assets/images/step5_chunien_5.jpg",
+            "step5_chunien_6": "./assets/images/step5_chunien_6.jpg",
+            "step5_chunien_7": "./assets/images/step5_chunien_7.jpg",
+            // STEP 5 - Bình an
+            "step5_binhan_1": "./assets/images/step5_binhan_1.jpg",
+            "step5_binhan_2": "./assets/images/step5_binhan_2.jpg",
+            "step5_binhan_3": "./assets/images/step5_binhan_3.jpg",
+            "step5_binhan_4": "./assets/images/step5_binhan_4.jpg",
+            // STEP 5 - Quy y
+            "step5_quyy_1": "./assets/images/step5_quyy_1.jpg",
+            "step5_quyy_2": "./assets/images/step5_quyy_2.jpg",
+            "step5_quyy_3": "./assets/images/step5_quyy_3.jpg",
+            // STEP 5 - Quá đường
+            "step5_quaduong_1": "./assets/images/step5_quaduong_1.jpg",
+            "step5_quaduong_2": "./assets/images/step5_quaduong_2.jpg",
+            "step5_quaduong_3": "./assets/images/step5_quaduong_3.jpg",
+
+            // STEP 6 - Khóa tu
+            "step6_khoatu_1": "./assets/images/step6_khoatu_1.jpg",
+            "step6_khoatu_2": "./assets/images/step6_khoatu_2.jpg",
+            "step6_khoatu_3": "./assets/images/step6_khoatu_3.jpg",
+
+            // STEP 7 - Vu Lan & 20/11
+            "step7_vulan_1": "./assets/images/step7_vulan_1.jpg",
+            "step7_vulan_2": "./assets/images/step7_vulan_2.jpg",
+            "step7_vulan_3": "./assets/images/step7_vulan_3.jpg",
+
+            // STEP 8 - Tài trợ
+            "step8_taitro_1": "./assets/images/step8_taitro_1.jpg",
+            "step8_taitro_2": "./assets/images/step8_taitro_2.jpg",
+            "step8_taitro_3": "./assets/images/step8_taitro_3.jpg",
+            "step8_taitro_4": "./assets/images/step8_taitro_4.jpg",
+            "step8_taitro_5": "./assets/images/step8_taitro_5.jpg",
+
+            // STEP 9 - Kỷ niệm âm thầm
+            "step9_kyniem_1": "./assets/images/step9_kyniem_1.jpg",
+            "step9_kyniem_2": "./assets/images/step9_kyniem_2.jpg",
+            "step9_kyniem_3": "./assets/images/step9_kyniem_3.jpg",
+            "step9_kyniem_4": "./assets/images/step9_kyniem_4.jpg",
+            "step9_kyniem_5": "./assets/images/step9_kyniem_5.jpg",
+            "step9_kyniem_6": "./assets/images/step9_kyniem_6.jpg",
+
+            // STEP 12 - Đại gia đình Chánh Tâm (50 ảnh)
+            "step12_chanhtam_1": "./assets/images/step12_chanhtam_1.jpg",
+            "step12_chanhtam_2": "./assets/images/step12_chanhtam_2.jpg",
+            "step12_chanhtam_3": "./assets/images/step12_chanhtam_3.jpg",
+            "step12_chanhtam_4": "./assets/images/step12_chanhtam_4.jpg",
+            "step12_chanhtam_5": "./assets/images/step12_chanhtam_5.jpg",
+            "step12_chanhtam_6": "./assets/images/step12_chanhtam_6.jpg",
+            "step12_chanhtam_7": "./assets/images/step12_chanhtam_7.jpg",
+            "step12_chanhtam_8": "./assets/images/step12_chanhtam_8.jpg",
+            "step12_chanhtam_9": "./assets/images/step12_chanhtam_9.jpg",
+            "step12_chanhtam_10": "./assets/images/step12_chanhtam_10.jpg",
+            "step12_chanhtam_11": "./assets/images/step12_chanhtam_11.jpg",
+            "step12_chanhtam_12": "./assets/images/step12_chanhtam_12.jpg",
+            "step12_chanhtam_13": "./assets/images/step12_chanhtam_13.jpg",
+            "step12_chanhtam_14": "./assets/images/step12_chanhtam_14.jpg",
+            "step12_chanhtam_15": "./assets/images/step12_chanhtam_15.jpg",
+            "step12_chanhtam_16": "./assets/images/step12_chanhtam_16.jpg",
+            "step12_chanhtam_17": "./assets/images/step12_chanhtam_17.jpg",
+            "step12_chanhtam_18": "./assets/images/step12_chanhtam_18.jpg",
+            "step12_chanhtam_19": "./assets/images/step12_chanhtam_19.jpg",
+            "step12_chanhtam_20": "./assets/images/step12_chanhtam_20.jpg",
+            "step12_chanhtam_21": "./assets/images/step12_chanhtam_21.jpg",
+            "step12_chanhtam_22": "./assets/images/step12_chanhtam_22.jpg",
+            "step12_chanhtam_23": "./assets/images/step12_chanhtam_23.jpg",
+            "step12_chanhtam_24": "./assets/images/step12_chanhtam_24.jpg",
+            "step12_chanhtam_25": "./assets/images/step12_chanhtam_25.jpg",
+            "step12_chanhtam_26": "./assets/images/step12_chanhtam_26.jpg",
+            "step12_chanhtam_27": "./assets/images/step12_chanhtam_27.jpg",
+            "step12_chanhtam_28": "./assets/images/step12_chanhtam_28.jpg",
+            "step12_chanhtam_29": "./assets/images/step12_chanhtam_29.jpg",
+            "step12_chanhtam_30": "./assets/images/step12_chanhtam_30.jpg",
+            "step12_chanhtam_31": "./assets/images/step12_chanhtam_31.jpg",
+            "step12_chanhtam_32": "./assets/images/step12_chanhtam_32.jpg",
+            "step12_chanhtam_33": "./assets/images/step12_chanhtam_33.jpg",
+            "step12_chanhtam_34": "./assets/images/step12_chanhtam_34.jpg",
+            "step12_chanhtam_35": "./assets/images/step12_chanhtam_35.jpg",
+            "step12_chanhtam_36": "./assets/images/step12_chanhtam_36.jpg",
+            "step12_chanhtam_37": "./assets/images/step12_chanhtam_37.jpg",
+            "step12_chanhtam_38": "./assets/images/step12_chanhtam_38.jpg",
+            "step12_chanhtam_39": "./assets/images/step12_chanhtam_39.jpg",
+            "step12_chanhtam_40": "./assets/images/step12_chanhtam_40.jpg",
+            "step12_chanhtam_41": "./assets/images/step12_chanhtam_41.jpg",
+            "step12_chanhtam_42": "./assets/images/step12_chanhtam_42.jpg",
+            "step12_chanhtam_43": "./assets/images/step12_chanhtam_43.jpg",
+            "step12_chanhtam_44": "./assets/images/step12_chanhtam_44.jpg",
+            "step12_chanhtam_45": "./assets/images/step12_chanhtam_45.jpg",
+            "step12_chanhtam_46": "./assets/images/step12_chanhtam_46.jpg",
+            "step12_chanhtam_47": "./assets/images/step12_chanhtam_47.jpg",
+            "step12_chanhtam_48": "./assets/images/step12_chanhtam_48.jpg",
+            "step12_chanhtam_49": "./assets/images/step12_chanhtam_49.jpg",
+            "step12_chanhtam_50": "./assets/images/step12_chanhtam_50.jpg"
+        };
+        // =========================================================================
+
+        let currentLightboxImages = [];
+        let currentLightboxIndex = 0;
+
         window.onload = () => {
+            renderImagesFromConfig(); // Gọi hàm đổ hình ảnh lên giao diện
             initIcons();
+            initLightbox();
+            loadWishesFromGoogleSheet();
         };
 
-        // Hàm tạo Icon lá/sao rơi ngẫu nhiên
+        // Hàm đọc cấu hình IMAGE_CONFIG và gán đường dẫn vào thẻ HTML
+        function renderImagesFromConfig() {
+            document.querySelectorAll('img[data-image]').forEach(img => {
+                const key = img.getAttribute('data-image');
+                if (IMAGE_CONFIG[key]) {
+                    img.src = IMAGE_CONFIG[key];
+                    // Bỏ background placeholder khi ảnh load xong
+                    img.onload = () => { img.style.backgroundColor = 'transparent'; };
+                }
+            });
+        }
+
+        // Hàm gọi API lấy dữ liệu JSON từ Google Sheet
+        async function loadWishesFromGoogleSheet() {
+            const sheetId = '1HhZPAqsVZfHvhybC7QDkGm9PjgCHWo7LbrPzBqsf2cE';
+            const sheetName = 'DS';
+            const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=${sheetName}`;
+
+            try {
+                const response = await fetch(url);
+                const text = await response.text();
+                
+                const start = text.indexOf('{');
+                const end = text.lastIndexOf('}');
+                const jsonString = text.substring(start, end + 1);
+                const data = JSON.parse(jsonString);
+                
+                const rows = data.table.rows;
+                const container = document.getElementById('wishes-container');
+                container.innerHTML = ''; 
+
+                let hasWishes = false;
+
+                rows.forEach((row) => {
+                    if (row && row.c && row.c[3]) {
+                        let isShow = row.c[3].v;
+                        if (isShow === true || String(isShow).toUpperCase() === 'TRUE') {
+                            const name = row.c[1] && row.c[1].v ? row.c[1].v : 'Ẩn danh';
+                            const content = row.c[2] && row.c[2].v ? String(row.c[2].v) : '';
+                            
+                            if (content.trim() !== '') {
+                                hasWishes = true;
+                                const wishHtml = `
+                                    <div class="text-left mb-8 pb-6 border-b border-orange-100 last:border-0 last:mb-0 last:pb-0">
+                                        <p class="font-bold text-orange-800 mb-3 text-lg uppercase">${name}</p>
+                                        <p class="italic text-gray-700 text-justify leading-relaxed text-[1.1rem]">"${content.replace(/\n/g, '<br>')}"</p>
+                                    </div>
+                                `;
+                                container.insertAdjacentHTML('beforeend', wishHtml);
+                            }
+                        }
+                    }
+                });
+
+                if (!hasWishes) {
+                    container.innerHTML = '<p class="text-center text-gray-500 italic py-8">Chưa có lời chúc nào được hiển thị.</p>';
+                }
+
+            } catch (error) {
+                console.error('Lỗi tải dữ liệu Google Sheet:', error);
+                document.getElementById('wishes-container').innerHTML = '<p class="text-center text-red-500 italic py-8">Không thể tải lời chúc lúc này. Vui lòng kiểm tra lại quyền truy cập Sheet (phải chọn "Bất kỳ ai có liên kết") và thử lại sau.</p>';
+            }
+        }
+
         function initIcons() {
             const container = document.getElementById('floating-icons-container');
             const symbols = ['✨', '🍂', '🍁', '🧡', '🌿', '🍃'];
@@ -471,7 +854,7 @@
                 
                 el.style.left = Math.random() * 100 + 'vw';
                 el.style.fontSize = (Math.random() * 15 + 15) + 'px';
-                el.style.animationDuration = (Math.random() * 5 + 6) + 's'; // 6s - 11s để trôi chậm hơn
+                el.style.animationDuration = (Math.random() * 5 + 6) + 's'; 
                 
                 container.appendChild(el);
                 
@@ -479,40 +862,117 @@
             }, 700);
         }
 
-        // Logic chuyển Step với hiệu ứng màn hình đen
         function goToStep(nextStepNum, transitionText) {
-            // Phát nhạc nền khi người dùng bắt đầu tương tác nhấn nút
-            const bgMusic = document.getElementById('bg-music');
-            if (bgMusic && bgMusic.paused) {
-                bgMusic.volume = 0.6; // Cài đặt âm lượng ở mức 60%
-                bgMusic.play().catch(e => console.log("Trình duyệt chặn tự động phát nhạc: ", e));
+            const mainMusic = document.getElementById('bg-music-main');
+            const specialMusic = document.getElementById('bg-music-special');
+
+            if (nextStepNum === 1) {
+                if(mainMusic) { mainMusic.pause(); mainMusic.currentTime = 0; }
+                if(specialMusic) { specialMusic.pause(); specialMusic.currentTime = 0; }
+            } else if (nextStepNum >= 10) {
+                if(mainMusic) mainMusic.pause();
+                if (specialMusic && specialMusic.paused) {
+                    specialMusic.volume = 0.3;
+                    specialMusic.play().catch(e => console.log("Trình duyệt chặn phát nhạc: ", e));
+                }
+            } else {
+                if(specialMusic) specialMusic.pause();
+                if (mainMusic && mainMusic.paused) {
+                    mainMusic.volume = 0.3;
+                    mainMusic.play().catch(e => console.log("Trình duyệt chặn phát nhạc: ", e));
+                }
             }
 
             const overlay = document.getElementById('transition-overlay');
             const overlayTxt = document.getElementById('overlay-text');
             
-            // Set text và hiện overlay (màn hình đen mờ dần lên)
             overlayTxt.innerText = transitionText;
             overlay.classList.add('active');
 
-            // Đợi 0.8s (thời gian transition CSS) để màn hình đen hoàn toàn che lấp
             setTimeout(() => {
-                // 1. Ẩn tất cả các step
                 document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-                
-                // 2. Kích hoạt Step được chỉ định
                 const nextStep = document.getElementById(`step-${nextStepNum}`);
                 if (nextStep) nextStep.classList.add('active');
                 
-                // 3. Cuộn trang lên đầu ngay lập tức
                 window.scrollTo({ top: 0, behavior: 'instant' });
                 
-                // 4. Giữ màn hình đen một chút cho người dùng đọc chữ, sau đó mở ra
                 setTimeout(() => {
                     overlay.classList.remove('active');
-                }, 1500); // Giảm thời gian chờ xuống 1.5s cho mượt
-
+                }, 1500); 
             }, 800); 
+        }
+
+        function initLightbox() {
+            document.querySelectorAll('.step').forEach(step => {
+                const images = Array.from(step.querySelectorAll('.story-img'));
+                images.forEach((img, index) => {
+                    img.style.cursor = 'pointer'; 
+                    img.addEventListener('click', () => {
+                        openLightbox(images, index);
+                    });
+                });
+            });
+
+            window.addEventListener('keydown', (e) => {
+                const modal = document.getElementById('image-modal');
+                if (modal && !modal.classList.contains('hidden')) {
+                    if (e.key === 'ArrowRight') changeLightboxImage(1);
+                    if (e.key === 'ArrowLeft') changeLightboxImage(-1);
+                    if (e.key === 'Escape') closeLightbox();
+                }
+            });
+
+            const modal = document.getElementById('image-modal');
+            if(modal) {
+                modal.addEventListener('click', (e) => {
+                    if (e.target.tagName !== 'IMG' && !e.target.closest('button')) {
+                        closeLightbox();
+                    }
+                });
+            }
+        }
+
+        function openLightbox(images, index) {
+            currentLightboxImages = images;
+            currentLightboxIndex = index;
+            
+            const modal = document.getElementById('image-modal');
+            const modalImg = document.getElementById('lightbox-img');
+            
+            modalImg.src = currentLightboxImages[currentLightboxIndex].src;
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+            
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const modal = document.getElementById('image-modal');
+            document.body.style.overflow = 'auto';
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                document.getElementById('lightbox-img').src = ""; 
+            }, 300);
+        }
+
+        function changeLightboxImage(dir) {
+            if (currentLightboxImages.length === 0) return;
+            currentLightboxIndex += dir;
+            if (currentLightboxIndex >= currentLightboxImages.length) {
+                currentLightboxIndex = 0;
+            } else if (currentLightboxIndex < 0) {
+                currentLightboxIndex = currentLightboxImages.length - 1;
+            }
+            const modalImg = document.getElementById('lightbox-img');
+            modalImg.style.opacity = '0.4';
+            setTimeout(() => {
+                modalImg.src = currentLightboxImages[currentLightboxIndex].src;
+                modalImg.style.opacity = '1';
+            }, 150);
         }
     </script>
 </body>
